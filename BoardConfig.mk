@@ -33,12 +33,6 @@ BOARD_BLUEDROID_VENDOR_CONF := device/huawei/u8950/bluetooth/vnd_u8950.txt
 BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/huawei/u8950/bluetooth
 BOARD_HAVE_BLUETOOTH_BCM := true
 
-# FM Radio
-BOARD_FM_DEVICE := bcm4330
-BOARD_GLOBAL_CFLAGS += -DHAVE_FM_RADIO
-BOARD_HAVE_FM_RADIO := true
-BOARD_HAVE_QCOM_FM := true
-
 # RIL
 BOARD_RIL_CLASS := ../../../device/huawei/u8950/ril/
 
