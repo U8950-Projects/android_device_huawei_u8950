@@ -1,0 +1,34 @@
+From 5e7580350a47ec159855a8457546de3e72ff5436 Mon Sep 17 00:00:00 2001
+From: ksrt12 <kazakov12stepan2012@live.ru>
+Date: Sat, 12 Sep 2015 15:19:54 +0600
+Subject: [PATCH] Add SlimUpdater
+
+Change-Id: Id3b0f96d7805649350344102eeb5bb387c600fb7
+---
+ config/common.mk | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/config/common.mk b/config/common.mk
+index 3df933d..5e5d2dd 100644
+--- a/config/common.mk
++++ b/config/common.mk
+@@ -92,6 +92,7 @@ PRODUCT_PACKAGES += \
+ PRODUCT_PACKAGES += \
+     SlimCenter \
+     SlimLauncher \
++    SlimUpdater \
+     LatinIME \
+     BluetoothExt \
+     DashClock
+@@ -196,7 +197,7 @@ SLIM_VERSION := Slim-$(PRODUCT_VERSION_MAJOR).$(PRODUCT_VERSION_MINOR).$(PRODUCT
+ SLIM_MOD_VERSION := Slim-$(SLIM_BUILD)-$(PRODUCT_VERSION_MAJOR).$(PRODUCT_VERSION_MINOR).$(PRODUCT_VERSION_MAINTENANCE)-$(SLIM_BUILD_TYPE)$(SLIM_POSTFIX)
+ 
+ PRODUCT_PROPERTY_OVERRIDES += \
+-    BUILD_DISPLAY_ID=$(BUILD_ID) \
++    ro.slim.releasetype=$(SLIM_BUILD_TYPE) \
+     slim.ota.version=$(PRODUCT_VERSION_MAJOR).$(PRODUCT_VERSION_MINOR).$(PRODUCT_VERSION_MAINTENANCE) \
+     ro.slim.version=$(SLIM_VERSION) \
+     ro.modversion=$(SLIM_MOD_VERSION) \
+-- 
+2.1.4
+
