@@ -1,0 +1,27 @@
+From 48e4f69b010ada8d393511d8c6a0f3fff6b301aa Mon Sep 17 00:00:00 2001
+From: ksrt12 <kazakov12stepan2012@live.ru>
+Date: Sat, 12 Sep 2015 21:08:02 +0600
+Subject: [PATCH] Fix bcmdhd compilation error
+
+Change-Id: Ice8b215bd333220c422aad70803573ca41268c7a
+---
+ drivers/net/wireless/bcmdhd/dhd_wlfc.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/bcmdhd/dhd_wlfc.h b/drivers/net/wireless/bcmdhd/dhd_wlfc.h
+index 5a64e6f..a36a9c0 100644
+--- a/drivers/net/wireless/bcmdhd/dhd_wlfc.h
++++ b/drivers/net/wireless/bcmdhd/dhd_wlfc.h
+@@ -84,8 +84,8 @@ typedef struct wlfc_hanger {
+ 	uint32 failed_to_push;
+ 	uint32 failed_to_pop;
+ 	uint32 failed_slotfind;
+-	wlfc_hanger_item_t items[1];
+ 	uint32 slot_pos;
++	wlfc_hanger_item_t items[1];
+ } wlfc_hanger_t;
+ 
+ #define WLFC_HANGER_SIZE(n)	((sizeof(wlfc_hanger_t) - \
+-- 
+2.1.4
+
