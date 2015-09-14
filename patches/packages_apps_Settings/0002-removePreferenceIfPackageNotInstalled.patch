@@ -1,0 +1,48 @@
+From deab9e12302789e6301ba86b12ad3074a8801859 Mon Sep 17 00:00:00 2001
+From: ksrt12 <kazakov12stepan2012@live.ru>
+Date: Sun, 13 Sep 2015 15:23:12 +0600
+Subject: [PATCH] removePreferenceIfPackageNotInstalled
+
+Change-Id: I0a500e153a4c03506ecb6834147717a34f30e389
+---
+ src/com/android/settings/DeviceInfoSettings.java | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
+
+diff --git a/src/com/android/settings/DeviceInfoSettings.java b/src/com/android/settings/DeviceInfoSettings.java
+index c3a4ffa..eeb0d2c 100644
+--- a/src/com/android/settings/DeviceInfoSettings.java
++++ b/src/com/android/settings/DeviceInfoSettings.java
+@@ -498,6 +498,30 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
+             }
+         };
+ 
++    private boolean removePreferenceIfPackageNotInstalled(Preference preference) {
++        String intentUri=((PreferenceScreen) preference).getIntent().toUri(1);
++        Pattern pattern = Pattern.compile("component=([^/]+)/");
++        Matcher matcher = pattern.matcher(intentUri);
++
++        String packageName=matcher.find()?matcher.group(1):null;
++        if(packageName != null) {
++            try {
++                PackageInfo pi = getPackageManager().getPackageInfo(packageName,
++                        PackageManager.GET_ACTIVITIES);
++                if (!pi.applicationInfo.enabled) {
++                    Log.e(LOG_TAG,"package "+packageName+" is disabled, hiding preference.");
++                    getPreferenceScreen().removePreference(preference);
++                    return true;
++                }
++            } catch (NameNotFoundException e) {
++                Log.e(LOG_TAG,"package "+packageName+" not installed, hiding preference.");
++                getPreferenceScreen().removePreference(preference);
++                return true;
++            }
++        }
++        return false;
++    }
++
+     private String getMemInfo() {
+         String result = null;
+ 
+-- 
+2.1.4
+

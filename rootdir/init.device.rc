@@ -80,6 +80,7 @@ service compassd /system/bin/compassd
 
 service mpdecision /system/bin/mpdecision --no_sleep --avg_comp
     class late_start
+    disabled
     user root
 
 service thermald /system/bin/thermald
