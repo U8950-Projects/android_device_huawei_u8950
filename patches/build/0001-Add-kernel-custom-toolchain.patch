@@ -1,7 +1,7 @@
-From 3171c6b62630e5fccbe196d0e3c79b15cc1192e9 Mon Sep 17 00:00:00 2001
+From 7eb3193c6e84c12cf7e5b18842b494bc821e8ae1 Mon Sep 17 00:00:00 2001
 From: ksrt12 <kazakov12stepan2012@live.ru>
 Date: Sat, 12 Sep 2015 15:29:11 +0600
-Subject: [PATCH] Add kernel custom toolchain
+Subject: [PATCH 1/2] Add kernel custom toolchain
 
 Change-Id: I98b1a4d9fb8eeeb76090876033894d833ec3bab9
 ---

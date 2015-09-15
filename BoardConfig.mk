@@ -55,7 +55,7 @@ BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_$(BOARD_WLAN_DEVICE)
 BOARD_HOSTAPD_DRIVER := NL80211
 BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_$(BOARD_WLAN_DEVICE)
 
-TARGET_CUSTOM_WIFI := ../../device/huawei/msm7x27a-common/libhardware_legacy/wifi/wifi.c
+#TARGET_CUSTOM_WIFI := ../../device/huawei/msm7x27a-common/libhardware_legacy/wifi/wifi.c
 
 WIFI_DRIVER_FW_PATH_AP := "/system/etc/fw_4330_b2.bin"
 WIFI_DRIVER_FW_PATH_STA := "/system/etc/fw_4330_b2.bin"

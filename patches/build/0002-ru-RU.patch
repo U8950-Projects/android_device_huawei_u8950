@@ -1,0 +1,26 @@
+From 2ff84769cbc4645d95599171ca3cd1815e104f80 Mon Sep 17 00:00:00 2001
+From: ksrt12 <kazakov12stepan2012@live.ru>
+Date: Tue, 15 Sep 2015 11:41:30 +0600
+Subject: [PATCH 2/2] ru RU
+
+Change-Id: I792996eb0ae33a8ffaabfa92db70f74caee5e701
+---
+ target/product/full_base.mk | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/target/product/full_base.mk b/target/product/full_base.mk
+index ecaf1eb..ff3cc81 100644
+--- a/target/product/full_base.mk
++++ b/target/product/full_base.mk
+@@ -30,7 +30,7 @@ PRODUCT_PROPERTY_OVERRIDES := \
+     ro.config.notification_sound=Io.ogg
+ 
+ # Put en_US first in the list, so make it default.
+-PRODUCT_LOCALES := en_US
++PRODUCT_LOCALES := ru_RU
+ 
+ # Get some sounds
+ $(call inherit-product-if-exists, frameworks/base/data/sounds/AllAudioSlim.mk)
+-- 
+2.1.4
+
