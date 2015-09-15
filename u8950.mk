@@ -30,10 +30,10 @@ PRODUCT_COPY_FILES += \
 	
 # Permissions
 PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.hardware.sensor.compass.xml:system/etc/permissions/android.hardware.sensor.compass.xml
+	frameworks/native/data/etc/android.hardware.sensor.compass.xml:system/etc/permissions/android.hardware.sensor.compass.xml
 PRODUCT_COPY_FILES += \
-    frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml \
-    frameworks/native/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml
+	frameworks/native/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml \
+	frameworks/native/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml
 
 PRODUCT_COPY_FILES += \
 	device/huawei/u8950/keylayout/7k_handset.kl:system/usr/keylayout/7k_handset.kl \
@@ -53,6 +53,13 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	rild.libpath=/system/lib/libril-qc-1.so \
 	ro.telephony.ril.config=qcomdsds,skippinpukcount,signalstrength \
 	ro.telephony.ril_class=HuaweiRIL
+
+# Packages
+PRODUCT_PACKAGES += \
+	Eleven \
+	SlimUpdater
+#	libjni_mosaic \
+#	libjni_tinyplanet
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full.mk)
 
