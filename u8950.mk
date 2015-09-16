@@ -55,9 +55,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	ro.telephony.ril_class=HuaweiRIL
 
 # Packages
-PRODUCT_PACKAGES += \
-	Eleven \
-	SlimUpdater
+#PRODUCT_PACKAGES += \
 #	libjni_mosaic \
 #	libjni_tinyplanet
 
