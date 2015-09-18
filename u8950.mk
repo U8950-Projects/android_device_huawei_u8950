@@ -55,12 +55,13 @@ PRODUCT_PROPERTY_OVERRIDES += \
 	ro.telephony.ril_class=HuaweiRIL
 
 # Packages
-#PRODUCT_PACKAGES += \
-#	libjni_mosaic \
-#	libjni_tinyplanet
+PRODUCT_PACKAGES += \
+	CMUpdater
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full.mk)
 
 $(call inherit-product, frameworks/native/build/phone-hdpi-512-dalvik-heap.mk)
 
 $(call inherit-product-if-exists, vendor/huawei/u8950/u8950-vendor.mk)
+
+$(call inherit-product-if-exists, hardware/broadcom/wlan/bcmdhd/firmware/bcm4330/device-bcm.mk)
