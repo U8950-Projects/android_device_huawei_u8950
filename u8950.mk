@@ -26,7 +26,8 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
 	device/huawei/u8950/configs/AudioFilter.csv:system/etc/AudioFilter.csv \
 	device/huawei/u8950/configs/thermald.conf:system/etc/thermald.conf \
-	device/huawei/u8950/configs/nvram_4330.txt:system/etc/nvram_4330.txt
+	device/huawei/u8950/configs/nvram_4330.txt:system/etc/nvram_4330.txt \
+	device/huawei/u8950/configs/bcmdhd.cal:system/etc/wifi/bcmdhd.cal
 	
 # Permissions
 PRODUCT_COPY_FILES += \
@@ -56,7 +57,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Packages
 PRODUCT_PACKAGES += \
-	CMUpdater
+	CMUpdater \
+	RootExplorer
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full.mk)
 
