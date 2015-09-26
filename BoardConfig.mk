@@ -38,7 +38,6 @@ BOARD_RIL_CLASS := ../../../device/huawei/u8950/ril/
 
 # Kernel
 TARGET_KERNEL_CONFIG := u8950_defconfig
-#TARGET_KERNEL_CONFIG := u8950_no_defconfig
 
 # Partitions
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 1073741824 # 0x40000000

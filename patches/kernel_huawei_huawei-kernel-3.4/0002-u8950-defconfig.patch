@@ -1,24 +1,23 @@
-From e600b835275caa02cebfbba3527e89a9ff503109 Mon Sep 17 00:00:00 2001
+From 21b6e535ff2cbe7394232845cb48d00a28a68655 Mon Sep 17 00:00:00 2001
 From: ksrt12 <kazakov12stepan2012@live.ru>
-Date: Mon, 21 Sep 2015 15:46:22 +0600
-Subject: [PATCH] u8950
+Date: Sat, 26 Sep 2015 19:48:37 +0600
+Subject: [PATCH] u8950 defconfig
 
+Change-Id: I80a77ab503c569b2924308d682d102450248cf4d
 ---
- arch/arm/configs/u8950_defconfig   | 3448 ++++++++++++++++++++++++++++++++++++
- arch/arm/mach-msm/acpuclock-7627.c |    4 +-
- drivers/gpu/msm/adreno.c           |    2 +-
- 3 files changed, 3451 insertions(+), 3 deletions(-)
+ arch/arm/configs/u8950_defconfig | 3445 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 3445 insertions(+)
  create mode 100644 arch/arm/configs/u8950_defconfig
 
 diff --git a/arch/arm/configs/u8950_defconfig b/arch/arm/configs/u8950_defconfig
 new file mode 100644
-index 0000000..0c817c0
+index 0000000..0b9867b
 --- /dev/null
 +++ b/arch/arm/configs/u8950_defconfig
-@@ -0,0 +1,3448 @@
+@@ -0,0 +1,3445 @@
 +#
 +# Automatically generated file; DO NOT EDIT.
-+# Linux/arm 3.4.108 Kernel Configuration
++# Linux/arm 3.4.109 Kernel Configuration
 +#
 +CONFIG_ARM=y
 +CONFIG_ARM_HAS_SG_CHAIN=y
@@ -1503,8 +1502,6 @@ index 0000000..0c817c0
 +# CONFIG_ATH6K_LEGACY_EXT is not set
 +# CONFIG_ATH_COMMON is not set
 +CONFIG_BCMDHD=m
-+CONFIG_BCMDHD_FW_PATH="/vendor/firmware/fw_bcmdhd.bin"
-+CONFIG_BCMDHD_NVRAM_PATH="/etc/wifi/bcmdhd.cal"
 +# CONFIG_BRCMFMAC is not set
 +# CONFIG_HOSTAP is not set
 +# CONFIG_IWM is not set
@@ -3036,7 +3033,6 @@ index 0000000..0c817c0
 +# CONFIG_EXT3_FS_POSIX_ACL is not set
 +# CONFIG_EXT3_FS_SECURITY is not set
 +CONFIG_EXT4_FS=y
-+CONFIG_EXT4_FS_XATTR=y
 +# CONFIG_EXT4_FS_POSIX_ACL is not set
 +# CONFIG_EXT4_FS_SECURITY is not set
 +# CONFIG_EXT4_DEBUG is not set
@@ -3464,41 +3460,6 @@ index 0000000..0c817c0
 +CONFIG_NLATTR=y
 +# CONFIG_AVERAGE is not set
 +# CONFIG_CORDIC is not set
-diff --git a/arch/arm/mach-msm/acpuclock-7627.c b/arch/arm/mach-msm/acpuclock-7627.c
-index bcd15fc..6b30ce6 100644
---- a/arch/arm/mach-msm/acpuclock-7627.c
-+++ b/arch/arm/mach-msm/acpuclock-7627.c
-@@ -395,7 +395,7 @@ static struct clkctl_acpu_speed pll0_960_pll1_245_pll2_1200_pll4_1152[] = {
- 	{ 0, 600000, ACPU_PLL_2, 2, 1, 75000, 3, 4, 160000 },
- 	{ 1, 700800, ACPU_PLL_4, 6, 0, 87500, 3, 4, 160000, &pll4_cfg_tbl[0]},
- 	{ 1, 1008000, ACPU_PLL_4, 6, 0, 126000, 3, 5, 200000, &pll4_cfg_tbl[1]},
--	{ 1, 1152000, ACPU_PLL_4, 6, 0, 151200, 3, 6, 200000, &pll4_cfg_tbl[4]},
-+	{ 1, 1400000, ACPU_PLL_4, 6, 0, 140800, 3, 6, 200000, &pll4_cfg_tbl[5]},
- 	{ 0 }
- };
- 
-@@ -408,7 +408,7 @@ static struct clkctl_acpu_speed pll0_960_pll1_196_pll2_1200_pll4_1152[] = {
- 	{ 0, 600000, ACPU_PLL_2, 2, 1, 75000, 3, 4, 160000 },
- 	{ 1, 700800, ACPU_PLL_4, 6, 0, 87500, 3, 4, 160000, &pll4_cfg_tbl[0]},
- 	{ 1, 1008000, ACPU_PLL_4, 6, 0, 126000, 3, 5, 200000, &pll4_cfg_tbl[1]},
--	{ 1, 1152000, ACPU_PLL_4, 6, 0, 151200, 3, 6, 200000, &pll4_cfg_tbl[4]},
-+	{ 1, 1400000, ACPU_PLL_4, 6, 0, 140800, 3, 6, 200000, &pll4_cfg_tbl[5]},
- 	{ 0 }
- };
- 
-diff --git a/drivers/gpu/msm/adreno.c b/drivers/gpu/msm/adreno.c
-index 1f76c03..883ddd6 100644
---- a/drivers/gpu/msm/adreno.c
-+++ b/drivers/gpu/msm/adreno.c
-@@ -124,7 +124,7 @@ static struct adreno_device device_3d0 = {
- 		.pm_dump_enable = 0,
- 	},
- 	.gmem_base = 0,
--	.gmem_size = SZ_256K,
-+	.gmem_size = SZ_512K,
- 	.pfp_fw = NULL,
- 	.pm4_fw = NULL,
- 	.wait_timeout = 0, /* in milliseconds, 0 means disabled */
 -- 
 2.1.4
 

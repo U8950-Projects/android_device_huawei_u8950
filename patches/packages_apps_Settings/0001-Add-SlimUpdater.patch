@@ -1,0 +1,126 @@
+From 4cf6c986c5036e10b98920d3b5f8932ce278d7ea Mon Sep 17 00:00:00 2001
+From: ksrt12 <kazakov12stepan2012@live.ru>
+Date: Sat, 26 Sep 2015 19:18:00 +0600
+Subject: [PATCH] Add SlimUpdater
+
+Change-Id: I27076f7401c6f0593fe3dc530ec443f634c9d509
+---
+ res/values-ru/slim_strings.xml                   |  1 +
+ res/values/slim_strings.xml                      |  3 +++
+ res/xml/device_info_settings.xml                 |  8 ++++++
+ src/com/android/settings/DeviceInfoSettings.java | 34 ++++++++++++++++++++++++
+ 4 files changed, 46 insertions(+)
+
+diff --git a/res/values-ru/slim_strings.xml b/res/values-ru/slim_strings.xml
+index 8f5b900..37f3ee2 100644
+--- a/res/values-ru/slim_strings.xml
++++ b/res/values-ru/slim_strings.xml
+@@ -1180,4 +1180,5 @@
+   <string name="wifi_country_zm">Замбия</string>
+   <string name="wifi_country_zw">Зимбабве</string>
+   <string name="wifi_auto_config_priorities">Автоматический приоритет</string>
++  <string name="slimupdate_settings_title">Обновления SlimLP</string>
+ </resources>
+diff --git a/res/values/slim_strings.xml b/res/values/slim_strings.xml
+index 6d36957..ea56ead 100644
+--- a/res/values/slim_strings.xml
++++ b/res/values/slim_strings.xml
+@@ -53,6 +53,9 @@
+     <!-- Slim Shortcuts -->
+     <string name="slim_shortcut_picker">Slim Actions</string>
+ 
++    <!-- Slim Updater -->
++    <string name="slimupdate_settings_title">SlimLP updates</string>
++
+     <!-- About device screen, Slim version -->
+     <string name="slim_version_title">Slim version</string>
+     <string name="slim_version_default">Unknown</string>
+diff --git a/res/xml/device_info_settings.xml b/res/xml/device_info_settings.xml
+index 165c56d..bb07bd8 100644
+--- a/res/xml/device_info_settings.xml
++++ b/res/xml/device_info_settings.xml
+@@ -21,6 +21,14 @@
+                           android:enabled="false"
+                           android:layout="@layout/slim_logo_row" />
+ 
++        <PreferenceScreen android:key="slim_updates"
++                android:title="@string/slimupdate_settings_title"
++                android:summary="@string/system_update_settings_list_item_summary">
++            <intent android:action="android.intent.action.MAIN"
++                    android:targetPackage="com.ksrt12.updater"
++                    android:targetClass="com.ksrt12.updater.UpdatesSettings" />
++        </PreferenceScreen>
++
+         <!-- Device status - launches activity -->
+         <PreferenceScreen android:key="status_info"
+                 android:title="@string/device_status" 
+diff --git a/src/com/android/settings/DeviceInfoSettings.java b/src/com/android/settings/DeviceInfoSettings.java
+index 4168867..c926509 100644
+--- a/src/com/android/settings/DeviceInfoSettings.java
++++ b/src/com/android/settings/DeviceInfoSettings.java
+@@ -20,7 +20,9 @@ import android.app.Activity;
+ import android.content.Context;
+ import android.content.Intent;
+ import android.content.pm.ApplicationInfo;
++import android.content.pm.PackageInfo;
+ import android.content.pm.PackageManager;
++import android.content.pm.PackageManager.NameNotFoundException;
+ import android.content.pm.ResolveInfo;
+ import android.os.Binder;
+ import android.os.Build;
+@@ -79,6 +81,7 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
+     private static final String KEY_FIRMWARE_VERSION = "firmware_version";
+     private static final String KEY_SLIM_VERSION = "slim_version";
+     private static final String KEY_SLIM_BUILD_DATE = "build_date";
++    private static final String KEY_SLIM_UPDATES = "slim_updates";
+     private static final String KEY_EQUIPMENT_ID = "fcc_equipment_id";
+     private static final String PROPERTY_EQUIPMENT_ID = "ro.ril.fccid";
+     private static final String KEY_DEVICE_FEEDBACK = "device_feedback";
+@@ -122,6 +125,13 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
+         removePreferenceIfPropertyMissing(getPreferenceScreen(), KEY_SELINUX_STATUS,
+                 PROPERTY_SELINUX_STATUS);
+ 
++        // Only the owner should see the Updater settings, if it exists
++        if (UserHandle.myUserId() == UserHandle.USER_OWNER) {
++            removePreferenceIfPackageNotInstalled(findPreference(KEY_SLIM_UPDATES));
++        } else {
++            getPreferenceScreen().removePreference(findPreference(KEY_SLIM_UPDATES));
++        }
++
+         String cpuInfo = getCPUInfo();
+         String memInfo = getMemInfo();
+ 
+@@ -490,6 +500,30 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
+             }
+         };
+ 
++    private boolean removePreferenceIfPackageNotInstalled(Preference preference) {
++        String intentUri=((PreferenceScreen) preference).getIntent().toUri(1);
++        Pattern pattern = Pattern.compile("component=([^/]+)/");
++        Matcher matcher = pattern.matcher(intentUri);
++
++        String packageName=matcher.find()?matcher.group(1):null;
++        if(packageName != null) {
++            try {
++                PackageInfo pi = getPackageManager().getPackageInfo(packageName,
++                        PackageManager.GET_ACTIVITIES);
++                if (!pi.applicationInfo.enabled) {
++                    Log.e(LOG_TAG,"package "+packageName+" is disabled, hiding preference.");
++                    getPreferenceScreen().removePreference(preference);
++                    return true;
++                }
++            } catch (NameNotFoundException e) {
++                Log.e(LOG_TAG,"package "+packageName+" not installed, hiding preference.");
++                getPreferenceScreen().removePreference(preference);
++                return true;
++            }
++        }
++        return false;
++    }
++
+     private String getMemInfo() {
+         String result = null;
+ 
+-- 
+2.1.4
+
