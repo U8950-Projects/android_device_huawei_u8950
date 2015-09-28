@@ -1,19 +1,19 @@
-From eb43e44dfcd489f7024da86d4667115db7fad8b3 Mon Sep 17 00:00:00 2001
+From 2d478b00835c1155edac53fb47233521dfdbf444 Mon Sep 17 00:00:00 2001
 From: ksrt12 <kazakov12stepan2012@live.ru>
-Date: Mon, 28 Sep 2015 14:19:58 +0600
+Date: Mon, 28 Sep 2015 15:11:29 +0600
 Subject: [PATCH] Add old 3.4.0 u8950 defconfig
 
-Change-Id: Ibdf364aa9ac5b7323b6e85ccf866d962d6bd708a
+Change-Id: Id4638af022f857e4b5e80ce265452ef9ad51ff47
 ---
- arch/arm/configs/u8950_defconfig_0 | 3392 ++++++++++++++++++++++++++++++++++++
+ arch/arm/configs/u8950_0_defconfig | 3392 ++++++++++++++++++++++++++++++++++++
  1 file changed, 3392 insertions(+)
- create mode 100644 arch/arm/configs/u8950_defconfig_0
+ create mode 100644 arch/arm/configs/u8950_0_defconfig
 
-diff --git a/arch/arm/configs/u8950_defconfig_0 b/arch/arm/configs/u8950_defconfig_0
+diff --git a/arch/arm/configs/u8950_0_defconfig b/arch/arm/configs/u8950_0_defconfig
 new file mode 100644
 index 0000000..437f636
 --- /dev/null
-+++ b/arch/arm/configs/u8950_defconfig_0
++++ b/arch/arm/configs/u8950_0_defconfig
 @@ -0,0 +1,3392 @@
 +#
 +# Automatically generated file; DO NOT EDIT.

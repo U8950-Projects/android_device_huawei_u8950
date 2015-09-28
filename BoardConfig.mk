@@ -37,7 +37,7 @@ BOARD_HAVE_BLUETOOTH_BCM := true
 BOARD_RIL_CLASS := ../../../device/huawei/u8950/ril/
 
 # Kernel
-TARGET_KERNEL_CONFIG := u8950_defconfig_0
+TARGET_KERNEL_CONFIG := u8950_0_defconfig
 #TARGET_KERNEL_CONFIG := u8950_defconfig
 
 # Partitions
