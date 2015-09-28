@@ -1,20 +1,20 @@
-From 21b6e535ff2cbe7394232845cb48d00a28a68655 Mon Sep 17 00:00:00 2001
+From 4a0ddee1232ec34fa1ee1c8f5fc1629600c8a696 Mon Sep 17 00:00:00 2001
 From: ksrt12 <kazakov12stepan2012@live.ru>
-Date: Sat, 26 Sep 2015 19:48:37 +0600
-Subject: [PATCH] u8950 defconfig
+Date: Mon, 28 Sep 2015 14:20:50 +0600
+Subject: [PATCH] Add new 3.4.109 u8950 defconfig
 
-Change-Id: I80a77ab503c569b2924308d682d102450248cf4d
+Change-Id: Ib0a0076c68f119845cbb0d42ea16ab220054e56f
 ---
- arch/arm/configs/u8950_defconfig | 3445 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 3445 insertions(+)
+ arch/arm/configs/u8950_defconfig | 3448 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 3448 insertions(+)
  create mode 100644 arch/arm/configs/u8950_defconfig
 
 diff --git a/arch/arm/configs/u8950_defconfig b/arch/arm/configs/u8950_defconfig
 new file mode 100644
-index 0000000..0b9867b
+index 0000000..895918d
 --- /dev/null
 +++ b/arch/arm/configs/u8950_defconfig
-@@ -0,0 +1,3445 @@
+@@ -0,0 +1,3448 @@
 +#
 +# Automatically generated file; DO NOT EDIT.
 +# Linux/arm 3.4.109 Kernel Configuration
@@ -685,9 +685,7 @@ index 0000000..0b9867b
 +CONFIG_ZONE_DMA_FLAG=0
 +CONFIG_BOUNCE=y
 +CONFIG_VIRT_TO_BUS=y
-+CONFIG_KSM=y
-+CONFIG_UKSM=y
-+# CONFIG_KSM_LEGACY is not set
++# CONFIG_KSM is not set
 +CONFIG_DEFAULT_MMAP_MIN_ADDR=4096
 +CONFIG_CLEANCACHE=y
 +# CONFIG_USE_USER_ACCESSIBLE_TIMERS is not set
@@ -1158,7 +1156,11 @@ index 0000000..0b9867b
 +# CONFIG_CFG80211_INTERNAL_REGDB is not set
 +# CONFIG_CFG80211_WEXT is not set
 +# CONFIG_WIRELESS_EXT_SYSFS is not set
-+# CONFIG_LIB80211 is not set
++CONFIG_LIB80211=m
++CONFIG_LIB80211_CRYPT_WEP=m
++CONFIG_LIB80211_CRYPT_CCMP=m
++CONFIG_LIB80211_CRYPT_TKIP=m
++# CONFIG_LIB80211_DEBUG is not set
 +CONFIG_CFG80211_ALLOW_RECONNECT=y
 +# CONFIG_MAC80211 is not set
 +# CONFIG_WIMAX is not set
@@ -1503,7 +1505,8 @@ index 0000000..0b9867b
 +# CONFIG_ATH_COMMON is not set
 +CONFIG_BCMDHD=m
 +# CONFIG_BRCMFMAC is not set
-+# CONFIG_HOSTAP is not set
++CONFIG_HOSTAP=m
++# CONFIG_HOSTAP_FIRMWARE is not set
 +# CONFIG_IWM is not set
 +# CONFIG_LIBERTAS is not set
 +# CONFIG_MWIFIEX is not set
@@ -2269,7 +2272,7 @@ index 0000000..0b9867b
 +CONFIG_QUP_EXCLUSIVE_TO_CAMERA=y
 +# CONFIG_S5K3L1YX is not set
 +# CONFIG_IMX091 is not set
-+CONFIG_MSM_V4L2_VIDEO_OVERLAY_DEVICE=y
++# CONFIG_MSM_V4L2_VIDEO_OVERLAY_DEVICE is not set
 +# CONFIG_OV7692 is not set
 +# CONFIG_SENSOR_POWER_CHECK_PATCH is not set
 +# CONFIG_V4L_MEM2MEM_DRIVERS is not set
@@ -3363,7 +3366,7 @@ index 0000000..0b9867b
 +# CONFIG_CRYPTO_GHASH is not set
 +# CONFIG_CRYPTO_MD4 is not set
 +CONFIG_CRYPTO_MD5=y
-+# CONFIG_CRYPTO_MICHAEL_MIC is not set
++CONFIG_CRYPTO_MICHAEL_MIC=m
 +# CONFIG_CRYPTO_RMD128 is not set
 +# CONFIG_CRYPTO_RMD160 is not set
 +# CONFIG_CRYPTO_RMD256 is not set
