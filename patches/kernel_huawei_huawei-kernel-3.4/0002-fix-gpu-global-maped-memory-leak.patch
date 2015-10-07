@@ -1,0 +1,26 @@
+From e4beb77f70fcd4123fe098f0c18360ca1e802b06 Mon Sep 17 00:00:00 2001
+From: ksrt12 <kazakov12stepan2012@live.ru>
+Date: Tue, 6 Oct 2015 20:15:28 +0600
+Subject: [PATCH] fix gpu global maped memory leak
+
+Change-Id: Iaa572419ceeae60091cab23cfd352af0730a78da
+---
+ drivers/gpu/msm/kgsl_mmu.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/gpu/msm/kgsl_mmu.c b/drivers/gpu/msm/kgsl_mmu.c
+index 5a2724d..e721120 100644
+--- a/drivers/gpu/msm/kgsl_mmu.c
++++ b/drivers/gpu/msm/kgsl_mmu.c
+@@ -867,6 +867,8 @@ kgsl_mmu_unmap(struct kgsl_pagetable *pagetable,
+ 	spin_unlock(&pagetable->lock);
+ 	if (!kgsl_memdesc_is_global(memdesc))
+ 		memdesc->priv &= ~KGSL_MEMDESC_MAPPED;
++        else
++        kgsl_mmu_put_gpuaddr(pagetable, memdesc);
+ 	return 0;
+ }
+ EXPORT_SYMBOL(kgsl_mmu_unmap);
+-- 
+2.1.4
+
