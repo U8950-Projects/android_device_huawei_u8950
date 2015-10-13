@@ -1,0 +1,26 @@
+From 7e097d1fb5297480b907a4cee42f6a2dff311b04 Mon Sep 17 00:00:00 2001
+From: Kyle Harrison <khwebmail@gmail.com>
+Date: Sat, 22 Aug 2015 18:25:27 +0100
+Subject: [PATCH] Fix cortex-a5 cpu variant
+
+Change-Id: I25f6376c62484019a23e9a9860b73e74e3e81742
+---
+ core/combo/arch/arm/armv7-a-neon.mk | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/core/combo/arch/arm/armv7-a-neon.mk b/core/combo/arch/arm/armv7-a-neon.mk
+index c6c38e2..1b8b8be 100644
+--- a/core/combo/arch/arm/armv7-a-neon.mk
++++ b/core/combo/arch/arm/armv7-a-neon.mk
+@@ -31,7 +31,7 @@ ifeq ($(strip $(TARGET_$(combo_2nd_arch_prefix)CPU_VARIANT)),cortex-a7)
+ 		-Wl,--no-fix-cortex-a8
+ else
+ ifeq ($(strip $(TARGET_$(combo_2nd_arch_prefix)CPU_VARIANT)),cortex-a5)
+-	arch_variant_cflags := -mcpu=cortex-a7 -mfpu=neon-vfpv4
++	arch_variant_cflags := -mcpu=cortex-a5 -mfpu=neon-vfpv4
+ 	arch_variant_ldflags := \
+ 		-Wl,--no-fix-cortex-a8
+ else
+-- 
+2.5.0
+

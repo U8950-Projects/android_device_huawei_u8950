@@ -1,0 +1,63 @@
+From d4677c736ec89ee668b222a671a2671b36e8abd4 Mon Sep 17 00:00:00 2001
+From: ksrt12 <kazakov12stepan2012@live.ru>
+Date: Tue, 13 Oct 2015 20:04:07 +0600
+Subject: [PATCH] ru RU kernel
+
+Change-Id: Id1aa9ae6c812d3cdd720636cae4b67dc5efa6ccc
+---
+ core/tasks/kernel.mk        | 18 ++++++++++++++++--
+ target/product/full_base.mk |  2 +-
+ 2 files changed, 17 insertions(+), 3 deletions(-)
+
+diff --git a/core/tasks/kernel.mk b/core/tasks/kernel.mk
+index 6c00bf7..bc6a255 100644
+--- a/core/tasks/kernel.mk
++++ b/core/tasks/kernel.mk
+@@ -186,7 +186,21 @@ ifneq ($(USE_CCACHE),)
+     ccache := $(strip $(wildcard $(ccache)))
+ endif
+ 
+-KERNEL_CROSS_COMPILE := CROSS_COMPILE="$(ccache) $(KERNEL_TOOLCHAIN_PATH)"
++ifneq ($(TARGET_KERNEL_CUSTOM_TOOLCHAIN),)
++    ifeq ($(HOST_OS),darwin)
++        TARGET_KERNEL_CUSTOM_TOOLCHAIN_PATH := prebuilt/darwin-x86/toolchain
++    else
++        TARGET_KERNEL_CUSTOM_TOOLCHAIN_PATH := prebuilt/linux-x86/toolchain
++    endif
++else
++    ifeq ($(HOST_OS),darwin)
++        TARGET_KERNEL_CUSTOM_TOOLCHAIN_PATH := prebuilts/gcc/darwin-x86/arm/arm-linux-androideabi-4.9/bin
++    else
++        TARGET_KERNEL_CUSTOM_TOOLCHAIN_PATH := prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin
++    endif
++    TARGET_KERNEL_CUSTOM_TOOLCHAIN := arm-eabi-
++endif
++ KERNEL_CROSS_COMPILE:=CROSS_COMPILE="$(ccache) $(ANDROID_BUILD_TOP)/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN_PATH)/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN)"
+ ccache =
+ 
+ define mv-modules
+@@ -194,7 +208,7 @@ define mv-modules
+     if [ "$$mdpath" != "" ];then\
+         mpath=`dirname $$mdpath`;\
+         ko=`find $$mpath/kernel -type f -name *.ko`;\
+-        for i in $$ko; do $(KERNEL_TOOLCHAIN_PATH)strip --strip-unneeded $$i;\
++        for i in $$ko; do $(ANDROID_BUILD_TOP)/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN_PATH)/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN)strip --strip-unneeded $$i;\
+         mv $$i $(KERNEL_MODULES_OUT)/; done;\
+     fi
+ endef
+diff --git a/target/product/full_base.mk b/target/product/full_base.mk
+index f9b8505..294286a 100644
+--- a/target/product/full_base.mk
++++ b/target/product/full_base.mk
+@@ -28,7 +28,7 @@ PRODUCT_PROPERTY_OVERRIDES := \
+     ro.com.android.dateformat=MM-dd-yyyy
+ 
+ # Put en_US first in the list, so make it default.
+-PRODUCT_LOCALES := en_US
++PRODUCT_LOCALES := ru_RU
+ 
+ # Get some sounds
+ $(call inherit-product-if-exists, frameworks/base/data/sounds/AllAudio.mk)
+-- 
+2.1.4
+
