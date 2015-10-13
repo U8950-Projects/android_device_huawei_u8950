@@ -1,0 +1,66 @@
+From dc67f27d62ad9d3a88922b55f05cd1160bed7c69 Mon Sep 17 00:00:00 2001
+From: Kyle Harrison <khwebmail@gmail.com>
+Date: Wed, 11 Mar 2015 23:37:33 +0000
+Subject: [PATCH] Don't store metadata in video buffers - we don't support it.
+
+Change-Id: I819a2df29eaf89054eb41c289032c14997e3da35
+---
+ media/libstagefright/ACodec.cpp       | 4 ++++
+ media/libstagefright/Android.mk       | 1 +
+ media/libstagefright/CameraSource.cpp | 3 +++
+ 3 files changed, 8 insertions(+)
+
+diff --git a/media/libstagefright/ACodec.cpp b/media/libstagefright/ACodec.cpp
+index 17f641d..c047faf 100644
+--- a/media/libstagefright/ACodec.cpp
++++ b/media/libstagefright/ACodec.cpp
+@@ -603,11 +603,15 @@ status_t ACodec::allocateBuffersOnPort(OMX_U32 portIndex) {
+ 
+     status_t err;
+     if (mNativeWindow != NULL && portIndex == kPortIndexOutput) {
++#ifdef NO_METADATA_IN_VIDEO_BUFFERS
++        err = allocateOutputBuffersFromNativeWindow();
++#else
+         if (mStoreMetaDataInOutputBuffers) {
+             err = allocateOutputMetaDataBuffers();
+         } else {
+             err = allocateOutputBuffersFromNativeWindow();
+         }
++#endif
+     } else {
+         OMX_PARAM_PORTDEFINITIONTYPE def;
+         InitOMXParams(&def);
+diff --git a/media/libstagefright/Android.mk b/media/libstagefright/Android.mk
+index b4ad914..612de94 100644
+--- a/media/libstagefright/Android.mk
++++ b/media/libstagefright/Android.mk
+@@ -236,6 +236,7 @@ LOCAL_C_INCLUDES += \
+ 
+ ifeq ($(TARGET_BOARD_PLATFORM),msm7x27a)
+     LOCAL_CFLAGS += -DUSE_SUBMIT_ONE_INPUT_BUFFER
++    LOCAL_CFLAGS += -DNO_METADATA_IN_VIDEO_BUFFERS
+ endif
+ 
+ LOCAL_MODULE:= libstagefright
+diff --git a/media/libstagefright/CameraSource.cpp b/media/libstagefright/CameraSource.cpp
+index 3671aac..1c70efa 100644
+--- a/media/libstagefright/CameraSource.cpp
++++ b/media/libstagefright/CameraSource.cpp
+@@ -564,11 +564,14 @@ status_t CameraSource::initWithCameraAccess(
+     // By default, do not store metadata in video buffers
+     mIsMetaDataStoredInVideoBuffers = false;
+     mCamera->storeMetaDataInBuffers(false);
++
++#ifndef NO_METADATA_IN_VIDEO_BUFFERS
+     if (storeMetaDataInVideoBuffers) {
+         if (OK == mCamera->storeMetaDataInBuffers(true)) {
+             mIsMetaDataStoredInVideoBuffers = true;
+         }
+     }
++#endif
+ 
+     int64_t glitchDurationUs = (1000000LL / mVideoFrameRate);
+     if (glitchDurationUs > mGlitchDurationThresholdUs) {
+-- 
+2.4.6
+

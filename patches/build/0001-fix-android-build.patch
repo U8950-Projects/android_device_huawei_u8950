@@ -1,0 +1,103 @@
+From cb55bd9493b669e37f40aef546a4af74c0204a87 Mon Sep 17 00:00:00 2001
+From: ksrt12 <kazakov12stepan2012@live.ru>
+Date: Tue, 13 Oct 2015 18:55:21 +0600
+Subject: [PATCH] fix android build
+
+Change-Id: Iea163b026db74d004dfe79377fb9f75ebe158b25
+---
+ core/combo/arch/arm/armv7-a-neon.mk |  2 +-
+ core/qcom_target.mk                 |  2 +-
+ core/qcom_utils.mk                  |  1 +
+ core/tasks/kernel.mk                | 18 ++++++++++++++++--
+ target/product/full_base.mk         |  2 +-
+ 5 files changed, 20 insertions(+), 5 deletions(-)
+
+diff --git a/core/combo/arch/arm/armv7-a-neon.mk b/core/combo/arch/arm/armv7-a-neon.mk
+index c6c38e2..1b8b8be 100644
+--- a/core/combo/arch/arm/armv7-a-neon.mk
++++ b/core/combo/arch/arm/armv7-a-neon.mk
+@@ -31,7 +31,7 @@ ifeq ($(strip $(TARGET_$(combo_2nd_arch_prefix)CPU_VARIANT)),cortex-a7)
+ 		-Wl,--no-fix-cortex-a8
+ else
+ ifeq ($(strip $(TARGET_$(combo_2nd_arch_prefix)CPU_VARIANT)),cortex-a5)
+-	arch_variant_cflags := -mcpu=cortex-a7 -mfpu=neon-vfpv4
++	arch_variant_cflags := -mcpu=cortex-a5 -mfpu=neon-vfpv4
+ 	arch_variant_ldflags := \
+ 		-Wl,--no-fix-cortex-a8
+ else
+diff --git a/core/qcom_target.mk b/core/qcom_target.mk
+index a6d3965..b7ed2ba 100644
+--- a/core/qcom_target.mk
++++ b/core/qcom_target.mk
+@@ -23,7 +23,7 @@ ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
+     TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
+ 
+     # Enable DirectTrack for legacy targets
+-    ifneq ($(filter msm7x30 msm8660 msm8960,$(TARGET_BOARD_PLATFORM)),)
++    ifneq ($(filter msm7x27a msm7x30 msm8660 msm8960,$(TARGET_BOARD_PLATFORM)),)
+         ifeq ($(BOARD_USES_LEGACY_ALSA_AUDIO),true)
+             qcom_flags += -DQCOM_DIRECTTRACK
+         endif
+diff --git a/core/qcom_utils.mk b/core/qcom_utils.mk
+index bb1202c..9e5d096 100755
+--- a/core/qcom_utils.mk
++++ b/core/qcom_utils.mk
+@@ -1,5 +1,6 @@
+ # Board platforms lists to be used for
+ # TARGET_BOARD_PLATFORM specific featurization
++QCOM_BOARD_PLATFORMS += msm7x27a
+ QCOM_BOARD_PLATFORMS += msm7x30
+ QCOM_BOARD_PLATFORMS += msm8226
+ QCOM_BOARD_PLATFORMS += msm8610
+diff --git a/core/tasks/kernel.mk b/core/tasks/kernel.mk
+index 7936ccc..aa0b7d2 100644
+--- a/core/tasks/kernel.mk
++++ b/core/tasks/kernel.mk
+@@ -184,7 +184,21 @@ ifneq ($(USE_CCACHE),)
+     ccache := $(strip $(wildcard $(ccache)))
+ endif
+ 
+-KERNEL_CROSS_COMPILE := CROSS_COMPILE="$(ccache) $(KERNEL_TOOLCHAIN_PATH)"
++ifneq ($(TARGET_KERNEL_CUSTOM_TOOLCHAIN),)
++    ifeq ($(HOST_OS),darwin)
++        TARGET_KERNEL_CUSTOM_TOOLCHAIN_PATH := prebuilt/darwin-x86/toolchain
++    else
++        TARGET_KERNEL_CUSTOM_TOOLCHAIN_PATH := prebuilt/linux-x86/toolchain
++    endif
++else
++    ifeq ($(HOST_OS),darwin)
++        TARGET_KERNEL_CUSTOM_TOOLCHAIN_PATH := prebuilts/gcc/darwin-x86/arm/arm-linux-androideabi-4.9/bin
++    else
++        TARGET_KERNEL_CUSTOM_TOOLCHAIN_PATH := prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin
++    endif
++    TARGET_KERNEL_CUSTOM_TOOLCHAIN := arm-eabi-
++endif
++ KERNEL_CROSS_COMPILE:=CROSS_COMPILE="$(ccache) $(ANDROID_BUILD_TOP)/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN_PATH)/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN)"
+ ccache =
+ 
+ define mv-modules
+@@ -192,7 +206,7 @@ define mv-modules
+     if [ "$$mdpath" != "" ];then\
+         mpath=`dirname $$mdpath`;\
+         ko=`find $$mpath/kernel -type f -name *.ko`;\
+-        for i in $$ko; do $(KERNEL_TOOLCHAIN_PATH)strip --strip-unneeded $$i;\
++        for i in $$ko; do $(ANDROID_BUILD_TOP)/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN_PATH)/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN)strip --strip-unneeded $$i;\
+         mv $$i $(KERNEL_MODULES_OUT)/; done;\
+     fi
+ endef
+diff --git a/target/product/full_base.mk b/target/product/full_base.mk
+index ecaf1eb..ff3cc81 100644
+--- a/target/product/full_base.mk
++++ b/target/product/full_base.mk
+@@ -30,7 +30,7 @@ PRODUCT_PROPERTY_OVERRIDES := \
+     ro.config.notification_sound=Io.ogg
+ 
+ # Put en_US first in the list, so make it default.
+-PRODUCT_LOCALES := en_US
++PRODUCT_LOCALES := ru_RU
+ 
+ # Get some sounds
+ $(call inherit-product-if-exists, frameworks/base/data/sounds/AllAudioSlim.mk)
+-- 
+2.1.4
+

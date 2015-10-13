@@ -1,0 +1,44 @@
+From 22860f23a2577b8fb7cc47d95b7ec6e4fbd2d8da Mon Sep 17 00:00:00 2001
+From: Kyle Harrison <khwebmail@gmail.com>
+Date: Thu, 16 Apr 2015 12:38:38 +0100
+Subject: [PATCH] cortex-a5 support
+
+Change-Id: If77afda790ab886583afb31b4e0317049e8c19a2
+---
+ libc/arch-arm/arm.mk                 | 4 ++--
+ libc/arch-arm/cortex-a5/cortex-a5.mk | 1 +
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+ create mode 100644 libc/arch-arm/cortex-a5/cortex-a5.mk
+
+diff --git a/libc/arch-arm/arm.mk b/libc/arch-arm/arm.mk
+index 36612de..9c365d6 100644
+--- a/libc/arch-arm/arm.mk
++++ b/libc/arch-arm/arm.mk
+@@ -71,7 +71,7 @@ ifeq ($(strip $(TARGET_$(my_2nd_arch_prefix)CPU_VARIANT)),)
+   $(warning TARGET_$(my_2nd_arch_prefix)ARCH is arm, but TARGET_$(my_2nd_arch_prefix)CPU_VARIANT is not defined)
+ endif
+ 
+-ifeq ($(filter cortex-a9 cortex-a53 denver krait scorpion, $(strip $(TARGET_$(my_2nd_arch_prefix)CPU_VARIANT))),)
++ifeq ($(filter cortex-a5 cortex-a9 cortex-a53 denver krait scorpion, $(strip $(TARGET_$(my_2nd_arch_prefix)CPU_VARIANT))),)
+ libc_bionic_src_files_arm += \
+     upstream-openbsd/lib/libc/string/stpcpy.c
+ endif
+@@ -83,7 +83,7 @@ endif
+ 
+ cpu_variant_mk := $(LOCAL_PATH)/arch-arm/$(TARGET_$(my_2nd_arch_prefix)CPU_VARIANT)/$(TARGET_$(my_2nd_arch_prefix)CPU_VARIANT).mk
+ ifeq ($(wildcard $(cpu_variant_mk)),)
+-$(error "TARGET_$(my_2nd_arch_prefix)CPU_VARIANT not set or set to an unknown value. Possible values are cortex-a7, cortex-a8, cortex-a9, cortex-a15, krait, scorpion, denver. Use generic for devices that do not have a CPU similar to any of the supported cpu variants.")
++$(error "TARGET_$(my_2nd_arch_prefix)CPU_VARIANT not set or set to an unknown value. Possible values are cortex-a5, cortex-a7, cortex-a8, cortex-a9, cortex-a15, krait, scorpion, denver. Use generic for devices that do not have a CPU similar to any of the supported cpu variants.")
+ endif
+ include $(cpu_variant_mk)
+ libc_common_additional_dependencies += $(cpu_variant_mk)
+diff --git a/libc/arch-arm/cortex-a5/cortex-a5.mk b/libc/arch-arm/cortex-a5/cortex-a5.mk
+new file mode 100644
+index 0000000..944db2c
+--- /dev/null
++++ b/libc/arch-arm/cortex-a5/cortex-a5.mk
+@@ -0,0 +1 @@
++include bionic/libc/arch-arm/cortex-a9/cortex-a9.mk
+-- 
+2.3.5
+
