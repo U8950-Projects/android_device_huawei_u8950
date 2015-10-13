@@ -1,0 +1,27 @@
+From 99a5bfbc7c939132c567ffb51fbda9cd43a3da05 Mon Sep 17 00:00:00 2001
+From: ksrt12 <kazakov12stepan2012@live.ru>
+Date: Tue, 13 Oct 2015 20:15:31 +0600
+Subject: [PATCH] ZRAM
+
+Change-Id: I98d652d07e8ec8d98536434c6e95a47c50e1287c
+---
+ arch/arm/configs/u8950_defconfig | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/arch/arm/configs/u8950_defconfig b/arch/arm/configs/u8950_defconfig
+index f763a21..7ea236e 100644
+--- a/arch/arm/configs/u8950_defconfig
++++ b/arch/arm/configs/u8950_defconfig
+@@ -1259,6 +1259,9 @@ CONFIG_MTD_NAND_IDS=y
+ # CONFIG_MTD_UBI is not set
+ # CONFIG_PARPORT is not set
+ CONFIG_BLK_DEV=y
++CONFIG_ZRAM=y
++CONFIG_ZRAM_LZ4_COMPRESS=y
++# CONFIG_ZRAM_DEBUG is not set
+ # CONFIG_BLK_DEV_COW_COMMON is not set
+ CONFIG_BLK_DEV_LOOP=y
+ CONFIG_BLK_DEV_LOOP_MIN_COUNT=8
+-- 
+2.1.4
+
