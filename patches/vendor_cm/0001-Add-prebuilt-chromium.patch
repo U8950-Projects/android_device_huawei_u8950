@@ -1,14 +1,31 @@
-From 04243cbe0fd34f34b7328dbe32d4e809197767a0 Mon Sep 17 00:00:00 2001
+From 4333655c1fe110b7dceeb7e0596c0d4d0438d65e Mon Sep 17 00:00:00 2001
 From: ksrt12 <kazakov12stepan2012@live.ru>
-Date: Wed, 14 Oct 2015 21:25:33 +0600
+Date: Wed, 14 Oct 2015 21:28:08 +0600
 Subject: [PATCH] Add prebuilt chromium
 
-Change-Id: I6375e2d626f33b883b03618e4cff5b4d3201e1dd
+Change-Id: I3e34b585d93cf730bd8a4a52605016762eddf305
 ---
+ config/common.mk           |   5 ++
  tools/chromium_prebuilt.sh | 124 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 124 insertions(+)
+ 2 files changed, 129 insertions(+)
  create mode 100755 tools/chromium_prebuilt.sh
 
+diff --git a/config/common.mk b/config/common.mk
+index 3ad692a..99d8b1c 100644
+--- a/config/common.mk
++++ b/config/common.mk
+@@ -329,6 +329,11 @@ ifneq ($(PRODUCT_DEFAULT_DEV_CERTIFICATE),build/target/product/security/testkey)
+ endif
+ endif
+ 
++# Chromium Prebuilt
++ifeq ($(PRODUCT_PREBUILT_WEBVIEWCHROMIUM),yes)
++-include prebuilts/chromium/$(TARGET_DEVICE)/chromium_prebuilt.mk
++endif
++
+ # by default, do not update the recovery with system updates
+ PRODUCT_PROPERTY_OVERRIDES += persist.sys.recovery_update=false
+ 
 diff --git a/tools/chromium_prebuilt.sh b/tools/chromium_prebuilt.sh
 new file mode 100755
 index 0000000..536afc9
