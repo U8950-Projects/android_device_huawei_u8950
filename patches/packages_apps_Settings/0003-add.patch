@@ -1,0 +1,55 @@
+From aa14a4a17574cf728544e667165514fe29207af6 Mon Sep 17 00:00:00 2001
+From: ksrt12 <kazakov12stepan2012@live.ru>
+Date: Sun, 18 Oct 2015 21:48:22 +0600
+Subject: [PATCH] add
+
+Change-Id: I8249c83210aba48924ebec40c20742efc623a6fa
+---
+ res/values-ru/slim_strings.xml   | 1 +
+ res/values/slim_strings.xml      | 4 ++++
+ res/xml/device_info_settings.xml | 8 ++++++++
+ 3 files changed, 13 insertions(+)
+
+diff --git a/res/values-ru/slim_strings.xml b/res/values-ru/slim_strings.xml
+index 37f3ee2..28eade8 100644
+--- a/res/values-ru/slim_strings.xml
++++ b/res/values-ru/slim_strings.xml
+@@ -1181,4 +1181,5 @@
+   <string name="wifi_country_zw">Зимбабве</string>
+   <string name="wifi_auto_config_priorities">Автоматический приоритет</string>
+   <string name="slimupdate_settings_title">Обновления SlimLP</string>
++  <string name="authors_firmware">Авторы прошивки</string>
+ </resources>
+diff --git a/res/values/slim_strings.xml b/res/values/slim_strings.xml
+index ea56ead..f15f7a9 100644
+--- a/res/values/slim_strings.xml
++++ b/res/values/slim_strings.xml
+@@ -1425,4 +1425,8 @@
+     <!-- Whether the dots will be drawn when using the lockscreen pattern -->
+     <string name="lockpattern_settings_enable_dots_title">Show pattern dots</string>
+ 
++    <!-- Authors firmware information-->
++    <string name="authors_firmware">Authors firmware</string>
++    <string name="authors_firmware_summary">ksrt12 and fell978</string>
++
+ </resources>
+diff --git a/res/xml/device_info_settings.xml b/res/xml/device_info_settings.xml
+index 41661a3..7466080 100644
+--- a/res/xml/device_info_settings.xml
++++ b/res/xml/device_info_settings.xml
+@@ -161,4 +161,12 @@
+                 android:title="@string/selinux_status"
+                 android:summary="@string/selinux_status_enforcing"/>
+ 
++        <!-- Authors firmware information-->
++        <PreferenceScreen android:key="authors_firmware" 
++                style="?android:preferenceInformationStyle"
++                android:title="@string/authors_firmware"
++                android:summary="@string/authors_firmware_summary">
++            <intent android:action="android.intent.action.VIEW" android:data="https://github.com/U8950-Projects" />
++        </PreferenceScreen>
++
+ </PreferenceScreen>
+-- 
+2.1.4
+

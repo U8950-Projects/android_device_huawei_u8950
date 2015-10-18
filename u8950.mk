@@ -44,9 +44,6 @@ PRODUCT_COPY_FILES += \
 
 # Properties
 PRODUCT_PROPERTY_OVERRIDES += \
-	ro.firmware.builders=ksrt12 and fell978
-
-PRODUCT_PROPERTY_OVERRIDES += \
 	ro.confg.hw_appfsversion=u8950V5_1_SYSIMG \
 	ro.confg.hw_appsbootversion=u8950V5_1_APPSBOOT \
 	ro.confg.hw_appversion=u8950V5_1_KERNEL\
