@@ -1,9 +1,9 @@
-From 4cf6c986c5036e10b98920d3b5f8932ce278d7ea Mon Sep 17 00:00:00 2001
+From b9ae6fa54d57d84f75a0129f919ba58168530a0a Mon Sep 17 00:00:00 2001
 From: ksrt12 <kazakov12stepan2012@live.ru>
-Date: Sat, 26 Sep 2015 19:18:00 +0600
+Date: Sun, 18 Oct 2015 13:40:38 +0600
 Subject: [PATCH] Add SlimUpdater
 
-Change-Id: I27076f7401c6f0593fe3dc530ec443f634c9d509
+Change-Id: I89236c6c25652542ec3ed0cc5f3e22ab913ff1e9
 ---
  res/values-ru/slim_strings.xml                   |  1 +
  res/values/slim_strings.xml                      |  3 +++
@@ -36,7 +36,7 @@ index 6d36957..ea56ead 100644
      <string name="slim_version_title">Slim version</string>
      <string name="slim_version_default">Unknown</string>
 diff --git a/res/xml/device_info_settings.xml b/res/xml/device_info_settings.xml
-index 165c56d..bb07bd8 100644
+index 165c56d..41661a3 100644
 --- a/res/xml/device_info_settings.xml
 +++ b/res/xml/device_info_settings.xml
 @@ -21,6 +21,14 @@
@@ -47,8 +47,8 @@ index 165c56d..bb07bd8 100644
 +                android:title="@string/slimupdate_settings_title"
 +                android:summary="@string/system_update_settings_list_item_summary">
 +            <intent android:action="android.intent.action.MAIN"
-+                    android:targetPackage="com.ksrt12.updater"
-+                    android:targetClass="com.ksrt12.updater.UpdatesSettings" />
++                    android:targetPackage="com.slimlp.updater"
++                    android:targetClass="com.slimlp.updater.UpdatesSettings" />
 +        </PreferenceScreen>
 +
          <!-- Device status - launches activity -->
