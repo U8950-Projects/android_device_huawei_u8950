@@ -13,4 +13,4 @@ export USE_PREBUILT_CHROMIUM=1
 fi
 
 # Lunch
-add_lunch_combo slim_u8950-userdebug
+add_lunch_combo cm_u8950-userdebug

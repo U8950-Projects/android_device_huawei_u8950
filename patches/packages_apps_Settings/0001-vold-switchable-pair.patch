@@ -1,22 +1,22 @@
-From 15cec631dc24a505c6ca3e8b244248a8bce7ebc1 Mon Sep 17 00:00:00 2001
-From: Kyle Harrison <khwebmail@gmail.com>
-Date: Mon, 24 Nov 2014 00:53:10 +0000
+From 461f17a7224b4964341c56a1363b0ebc03337a4d Mon Sep 17 00:00:00 2001
+From: fonz93 <fonz993@hotmail.it>
+Date: Sun, 31 May 2015 19:53:36 +0200
 Subject: [PATCH] Add setting for vold switchable pair
 
-Change-Id: Ie697b747d3b8a1a09b2a1c52aa653393f6172f0c
+Change-Id: Ib24596ff8e38908bb4dd701057e06139e6dbe13c
 ---
- res/values/slim_strings.xml                     |  7 ++++
+ res/values/cm_strings.xml                       |  7 ++++
  res/xml/device_info_memory.xml                  |  6 +++
- src/com/android/settings/deviceinfo/Memory.java | 53 ++++++++++++++++++++++++-
- 3 files changed, 65 insertions(+), 1 deletion(-)
+ src/com/android/settings/deviceinfo/Memory.java | 51 ++++++++++++++++++++++++-
+ 3 files changed, 63 insertions(+), 1 deletion(-)
 
-diff --git a/res/values/slim_strings.xml b/res/values/slim_strings.xml
-index d7847e3..fff9d6d 100644
---- a/res/values/slim_strings.xml
-+++ b/res/values/slim_strings.xml
-@@ -53,6 +53,13 @@
-     <string name="root_access_adb">ADB only</string>
-     <string name="root_access_all">Apps and ADB</string>
+diff --git a/res/values/cm_strings.xml b/res/values/cm_strings.xml
+index d9b37a6..3a59050 100644
+--- a/res/values/cm_strings.xml
++++ b/res/values/cm_strings.xml
+@@ -357,6 +357,13 @@
+     <string name="adb_notify">Debugging notify</string>
+     <string name="adb_notify_summary">Display a notification when USB or network debugging is enabled</string>
  
 +    <!-- Vold Switchable Pair -->
 +    <string name="storage_switch_title">Use external SD as primary</string>
@@ -25,11 +25,11 @@ index d7847e3..fff9d6d 100644
 +    <string name="reboot_prompt_title">Reboot required</string>
 +    <string name="reboot_prompt_message">In order to apply the changed configuration, a reboot is required.\n\nDo you want to reboot now?</string>
 +
-     <!-- App ops -->
-     <string name="app_ops_summaries_coarse_location">coarse location</string>
-     <string name="app_ops_summaries_fine_location">fine location</string>
+     <!-- Hostname setting -->
+     <string name="device_hostname">Device hostname</string>
+ 
 diff --git a/res/xml/device_info_memory.xml b/res/xml/device_info_memory.xml
-index 36da89e..26d464f 100644
+index 38cc94a..980a399 100644
 --- a/res/xml/device_info_memory.xml
 +++ b/res/xml/device_info_memory.xml
 @@ -19,6 +19,12 @@
@@ -44,38 +44,31 @@ index 36da89e..26d464f 100644
 +
  <!-- Preference categories are dynamically created based on the list of available storage volumes -->
  
-     <PreferenceCategory
+ </PreferenceScreen>
 diff --git a/src/com/android/settings/deviceinfo/Memory.java b/src/com/android/settings/deviceinfo/Memory.java
-index b788324..f0027eb 100644
+index 48055ea..6b609a8 100644
 --- a/src/com/android/settings/deviceinfo/Memory.java
 +++ b/src/com/android/settings/deviceinfo/Memory.java
-@@ -32,21 +32,25 @@ import android.hardware.usb.UsbManager;
+@@ -32,6 +32,7 @@ import android.hardware.usb.UsbManager;
  import android.os.Bundle;
  import android.os.Environment;
  import android.os.IBinder;
 +import android.os.PowerManager;
  import android.os.RemoteException;
  import android.os.ServiceManager;
- import android.os.UserHandle;
-+import android.os.SystemProperties;
  import android.os.UserManager;
- import android.os.storage.IMountService;
- import android.os.storage.StorageEventListener;
+@@ -40,8 +41,10 @@ import android.os.storage.StorageEventListener;
  import android.os.storage.StorageManager;
  import android.os.storage.StorageVolume;
  import android.os.SystemProperties;
 +import android.preference.SwitchPreference;
- import android.preference.ListPreference;
  import android.preference.Preference;
- import android.preference.PreferenceCategory;
  import android.preference.PreferenceScreen;
- import android.preference.Preference.OnPreferenceChangeListener;
- import android.provider.Settings;
 +import android.text.TextUtils;
  import android.util.Log;
  import android.view.Menu;
  import android.view.MenuInflater;
-@@ -97,6 +101,10 @@ public class Memory extends SettingsPreferenceFragment
+@@ -86,6 +89,10 @@ public class Memory extends SettingsPreferenceFragment implements Indexable {
      private UsbManager mUsbManager;
  
      private ArrayList<StorageVolumePreferenceCategory> mCategories = Lists.newArrayList();
@@ -86,7 +79,7 @@ index b788324..f0027eb 100644
  
      @Override
      public void onCreate(Bundle icicle) {
-@@ -111,6 +119,27 @@ public class Memory extends SettingsPreferenceFragment
+@@ -100,6 +107,27 @@ public class Memory extends SettingsPreferenceFragment implements Indexable {
  
          addPreferencesFromResource(R.xml.device_info_memory);
  
@@ -114,7 +107,7 @@ index b788324..f0027eb 100644
          addCategory(StorageVolumePreferenceCategory.buildForInternal(context));
  
          final StorageVolume[] storageVolumes = mStorageManager.getVolumeList();
-@@ -265,7 +294,13 @@ public class Memory extends SettingsPreferenceFragment
+@@ -241,7 +269,13 @@ public class Memory extends SettingsPreferenceFragment implements Indexable {
  
      @Override
      public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
@@ -129,10 +122,10 @@ index b788324..f0027eb 100644
              ConfirmClearCacheFragment.show(this);
              return true;
          }
-@@ -598,4 +633,20 @@ public class Memory extends SettingsPreferenceFragment
+@@ -565,5 +599,20 @@ public class Memory extends SettingsPreferenceFragment implements Indexable {
+                 return result;
              }
          };
- 
 +    private void showRebootPrompt() {
 +        AlertDialog dialog = new AlertDialog.Builder(getActivity())
 +                .setTitle(R.string.reboot_prompt_title)
@@ -146,10 +139,10 @@ index b788324..f0027eb 100644
 +                })
 +                .setNegativeButton(R.string.no, null)
 +                .create();
-+
+ 
 +        dialog.show();
 +    }
  }
 -- 
-2.3.6
+1.9.1
 
