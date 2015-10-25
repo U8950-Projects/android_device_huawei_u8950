@@ -1,0 +1,26 @@
+From 2ca6e07ad83d7fdd2de63457b384195955973ff9 Mon Sep 17 00:00:00 2001
+From: ksrt12 <kazakov12stepan2012@live.ru>
+Date: Sun, 25 Oct 2015 16:43:11 +0600
+Subject: [PATCH] -j+1
+
+Change-Id: I9d485f017767fcf03c0643d4820c52574427160b
+---
+ envsetup.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/envsetup.sh b/envsetup.sh
+index 51f3253..fe18750 100755
+--- a/envsetup.sh
++++ b/envsetup.sh
+@@ -2341,7 +2341,7 @@ function mka() {
+                 make -C $T -j `sysctl hw.ncpu|cut -d" " -f2` "$@"
+                 ;;
+             *)
+-                mk_timer schedtool -B -n 1 -e ionice -n 1 make -C $T -j$(cat /proc/cpuinfo | grep "^processor" | wc -l) "$@"
++                mk_timer schedtool -B -n 1 -e ionice -n 1 make -C $T -j$((`cat /proc/cpuinfo | grep "^processor" | wc -l` +1 )) "$@"
+                 ;;
+         esac
+ 
+-- 
+2.1.4
+
