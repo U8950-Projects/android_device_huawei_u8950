@@ -14,19 +14,30 @@
 # limitations under the License.
 #
 
+LOCAL_PATH := device/huawei/u8950
+
 $(call inherit-product, device/huawei/msm7x27a-common/msm7x27a.mk)
 
-DEVICE_PACKAGE_OVERLAYS += device/huawei/u8950/overlay
+DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 
 PRODUCT_COPY_FILES += \
-	device/huawei/u8950/rootdir/fstab.huawei:root/fstab.huawei \
-	device/huawei/u8950/rootdir/init.device.rc:root/init.device.rc \
-	device/huawei/u8950/rootdir/1191601.img:root/tp/1191601.img
+	$(LOCAL_PATH)/rootdir/fstab.huawei:root/fstab.huawei \
+	$(LOCAL_PATH)/rootdir/init.device.rc:root/init.device.rc \
+	$(LOCAL_PATH)/rootdir/1191601.img:root/tp/1191601.img
 
 PRODUCT_COPY_FILES += \
-	device/huawei/u8950/configs/AudioFilter.csv:system/etc/AudioFilter.csv \
-	device/huawei/u8950/configs/thermald.conf:system/etc/thermald.conf \
-	device/huawei/u8950/configs/nvram_4330.txt:system/etc/nvram_4330.txt
+	$(LOCAL_PATH)/configs/AudioFilter.csv:system/etc/AudioFilter.csv \
+	$(LOCAL_PATH)/configs/thermald.conf:system/etc/thermald.conf \
+	$(LOCAL_PATH)/configs/nvram_4330.txt:system/etc/nvram_4330.txt
+
+ifeq ($(BUILD_FOR_TWRP),true)
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/twrp/recovery/sbin/charge_recovery:/recovery/root/sbin/charge_recovery \
+	$(LOCAL_PATH)/twrp/recovery/sbin/rmt_storage_recovery:/recovery/root/sbin/rmt_storage_recovery \
+	$(LOCAL_PATH)/twrp/recovery/sbin/rmt_oeminfo_recovery:/recovery/root/sbin/rmt_oeminfo_recovery \
+	$(LOCAL_PATH)/twrp/recovery/sbin/linker:/recovery/root/sbin/linker \
+	$(LOCAL_PATH)/twrp/recovery/sbin/charge.sh:/recovery/root/sbin/charge.sh
+endif
 	
 # Permissions
 PRODUCT_COPY_FILES += \
@@ -36,11 +47,11 @@ PRODUCT_COPY_FILES += \
 	frameworks/native/data/etc/android.hardware.touchscreen.multitouch.jazzhand.xml:system/etc/permissions/android.hardware.touchscreen.multitouch.jazzhand.xml
 
 PRODUCT_COPY_FILES += \
-	device/huawei/u8950/keylayout/7k_handset.kl:system/usr/keylayout/7k_handset.kl \
-	device/huawei/u8950/keylayout/atmel_mxt_ts.kl:system/usr/keylayout/atmel_mxt_ts.kl \
-	device/huawei/u8950/keylayout/AVRCP.kl:system/usr/keylayout/AVRCP.kl \
-	device/huawei/u8950/keylayout/ft5x06_ts.kl:system/usr/keylayout/ft5x06_ts.kl \
-	device/huawei/u8950/keylayout/Generic.kl:system/usr/keylayout/Generic.kl
+	$(LOCAL_PATH)/keylayout/7k_handset.kl:system/usr/keylayout/7k_handset.kl \
+	$(LOCAL_PATH)/keylayout/atmel_mxt_ts.kl:system/usr/keylayout/atmel_mxt_ts.kl \
+	$(LOCAL_PATH)/keylayout/AVRCP.kl:system/usr/keylayout/AVRCP.kl \
+	$(LOCAL_PATH)/keylayout/ft5x06_ts.kl:system/usr/keylayout/ft5x06_ts.kl \
+	$(LOCAL_PATH)/keylayout/Generic.kl:system/usr/keylayout/Generic.kl
 
 # Properties
 PRODUCT_PROPERTY_OVERRIDES += \
