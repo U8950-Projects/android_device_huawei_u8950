@@ -1,9 +1,9 @@
-From aa14a4a17574cf728544e667165514fe29207af6 Mon Sep 17 00:00:00 2001
+From 99ab114d20b4ebbfb01ea7f08ddce9698777d2fc Mon Sep 17 00:00:00 2001
 From: ksrt12 <kazakov12stepan2012@live.ru>
-Date: Sun, 18 Oct 2015 21:48:22 +0600
-Subject: [PATCH] add
+Date: Mon, 2 Nov 2015 20:42:47 +0600
+Subject: [PATCH] add authors
 
-Change-Id: I8249c83210aba48924ebec40c20742efc623a6fa
+Change-Id: Ifb962fc8f8ad737bb60dcc508e13e14f148f476d
 ---
  res/values-ru/slim_strings.xml   | 1 +
  res/values/slim_strings.xml      | 4 ++++
@@ -21,18 +21,20 @@ index 37f3ee2..28eade8 100644
 +  <string name="authors_firmware">Авторы прошивки</string>
  </resources>
 diff --git a/res/values/slim_strings.xml b/res/values/slim_strings.xml
-index ea56ead..f15f7a9 100644
+index 8674041..8c13214 100644
 --- a/res/values/slim_strings.xml
 +++ b/res/values/slim_strings.xml
-@@ -1425,4 +1425,8 @@
-     <!-- Whether the dots will be drawn when using the lockscreen pattern -->
-     <string name="lockpattern_settings_enable_dots_title">Show pattern dots</string>
+@@ -56,6 +56,10 @@
+     <!-- Slim Updater -->
+     <string name="slimupdate_settings_title">SlimLP updates</string>
  
 +    <!-- Authors firmware information-->
 +    <string name="authors_firmware">Authors firmware</string>
 +    <string name="authors_firmware_summary">ksrt12 and fell978</string>
 +
- </resources>
+     <!-- About device screen, Slim version -->
+     <string name="slim_version_title">Slim version</string>
+     <string name="slim_version_default">Unknown</string>
 diff --git a/res/xml/device_info_settings.xml b/res/xml/device_info_settings.xml
 index 41661a3..7466080 100644
 --- a/res/xml/device_info_settings.xml
@@ -51,5 +53,5 @@ index 41661a3..7466080 100644
 +
  </PreferenceScreen>
 -- 
-2.1.4
+2.5.0
 
