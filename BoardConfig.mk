@@ -37,7 +37,7 @@ BOARD_HAVE_BLUETOOTH_BCM := true
 BOARD_RIL_CLASS := ../../../device/huawei/u8950/ril/
 
 # Kernel
-#TARGET_PREBUILT_KERNEL := device/huawei/u8950/twrp/kernel
+#TARGET_PREBUILT_KERNEL := 
 ifeq ($(TARGET_PREBUILT_KERNEL),)
 TARGET_KERNEL_CONFIG := u8950_defconfig
 endif
@@ -50,7 +50,6 @@ BOARD_USERDATAIMAGE_PARTITION_SIZE := 1207943168 # 0x47FFC000
 #BUILD_FOR_TWRP := true
 ifeq ($(BUILD_FOR_TWRP),true)
 BOARD_HAS_NO_SELECT_BUTTON := true
-TARGET_PREBUILT_RECOVERY_KERNEL := device/huawei/u8950/twrp/kernel
 TARGET_RECOVERY_FSTAB := device/huawei/u8950/twrp/recovery.fstab
 BOARD_HAS_LARGE_FILESYSTEM := true
 BOARD_HAS_NO_MISC_PARTITION := true
@@ -84,7 +83,6 @@ BOARD_DATA_DEVICE := /dev/block/mmcblk0p18
 BOARD_DATA_FILESYSTEM := ext4
 BOARD_DATA_FILESYSTEM_OPTIONS := rw
 DEVICE_RESOLUTION := 540x960
-
 
 else
 TARGET_RECOVERY_FSTAB := device/huawei/u8950/rootdir/fstab.huawei
