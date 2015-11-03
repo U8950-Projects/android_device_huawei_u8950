@@ -1,19 +1,21 @@
-From 0409eead798b28ffad9c9a8a9708e8b2dd02cb93 Mon Sep 17 00:00:00 2001
-From: Steve Kondik <steve@cyngn.com>
-Date: Fri, 5 Dec 2014 00:28:43 -0800
-Subject: [PATCH] Cyanogen fix for deep sleep and latest play services [2/2]
+From 8bc96e5c7e01c5bf2ab1624dbb2ee21c710227af Mon Sep 17 00:00:00 2001
+From: Kyle Harrison <khwebmail@gmail.com>
+Date: Wed, 18 Mar 2015 14:18:38 +0000
+Subject: [PATCH] SystemUpdateService: enable service but lock its receivers
+ [2/2]
 
-cm: Reenable disabledComponents list
+Added SecretCodeReceiver to locked components
 
-enable service but lock its receivers [2/2]
+Added list of components that need to be forced enabled
+(because they've been previously disabled)
 
-Change-Id: Ic034b3f38afc463312e9ca2f827d48b6d9617004
+Change-Id: I3980b83c3ceb191bff66884dd9fd625a3d51f181
 ---
  .../frameworks/base/core/res/res/values/config.xml       | 16 +++++++++++++---
  1 file changed, 13 insertions(+), 3 deletions(-)
 
 diff --git a/overlay/common/frameworks/base/core/res/res/values/config.xml b/overlay/common/frameworks/base/core/res/res/values/config.xml
-index bd10939..67f2ed0 100644
+index c34122f..e4fb539 100644
 --- a/overlay/common/frameworks/base/core/res/res/values/config.xml
 +++ b/overlay/common/frameworks/base/core/res/res/values/config.xml
 @@ -23,12 +23,22 @@
@@ -33,15 +35,15 @@ index bd10939..67f2ed0 100644
 +        <item>com.google.android.gms/com.google.android.gms.update.SystemUpdateService$ActiveReceiver</item>
 +        <item>com.google.android.gms/com.google.android.gms.update.SystemUpdateService$SecretCodeReceiver</item>
 +    </string-array>
-+    
++
 +    <!-- Force enabling of some services that could have been previously disabled -->
 +    <string-array name="config_forceEnabledComponents" translatable="false">
 +        <item>com.google.android.gsf/com.google.android.gsf.update.SystemUpdateService</item>
 +        <item>com.google.android.gms/com.google.android.gms.update.SystemUpdateService</item>
 +    </string-array>
  
-     <string name="config_mms_user_agent">"Android-Mms/2.0"</string>
-     <string name="config_mms_user_agent_profile_url">http://www.google.com/oha/rdf/ua-profile-kila.xml</string>
+ </resources>
+ 
 -- 
-2.4.2
+2.3.2
 

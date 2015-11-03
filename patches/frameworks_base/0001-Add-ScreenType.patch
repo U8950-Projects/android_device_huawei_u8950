@@ -1,9 +1,9 @@
-From 518be894bacdd712d9ef1264701459cee1ec39bc Mon Sep 17 00:00:00 2001
+From 6eb154a85e23cfe4bc0fa9d416fe5b8f8a24a7a3 Mon Sep 17 00:00:00 2001
 From: ksrt12 <kazakov12stepan2012@live.ru>
-Date: Sat, 12 Sep 2015 15:14:55 +0600
+Date: Tue, 3 Nov 2015 23:15:00 +0600
 Subject: [PATCH] Add ScreenType
 
-Change-Id: Ib595cf70a9671f2b0c3e3b681cf004b30be34265
+Change-Id: Ief3f6d8db731bb9e60de927359df365340d35985
 ---
  .../com/android/internal/util/slim/ScreenType.java | 66 ++++++++++++++++++++++
  1 file changed, 66 insertions(+)

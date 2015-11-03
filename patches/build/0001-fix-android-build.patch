@@ -1,35 +1,40 @@
-From cb55bd9493b669e37f40aef546a4af74c0204a87 Mon Sep 17 00:00:00 2001
+From ec3b181a735d42326288c19392d24b8d043bccbd Mon Sep 17 00:00:00 2001
 From: ksrt12 <kazakov12stepan2012@live.ru>
-Date: Tue, 13 Oct 2015 18:55:21 +0600
+Date: Tue, 3 Nov 2015 22:38:31 +0600
 Subject: [PATCH] fix android build
 
-Change-Id: Iea163b026db74d004dfe79377fb9f75ebe158b25
+Change-Id: Ia6e73e0689e9783989619e57eb20ead69ab14cf9
 ---
- core/combo/arch/arm/armv7-a-neon.mk |  2 +-
- core/qcom_target.mk                 |  2 +-
- core/qcom_utils.mk                  |  1 +
- core/tasks/kernel.mk                | 18 ++++++++++++++++--
- target/product/full_base.mk         |  2 +-
- 5 files changed, 20 insertions(+), 5 deletions(-)
+ core/Makefile               |  7 +++++++
+ core/qcom_target.mk         |  2 +-
+ core/tasks/kernel.mk        | 18 ++++++++++++++++--
+ envsetup.sh                 | 19 +++++++++++++++++++
+ target/product/full_base.mk |  2 +-
+ 5 files changed, 44 insertions(+), 4 deletions(-)
 
-diff --git a/core/combo/arch/arm/armv7-a-neon.mk b/core/combo/arch/arm/armv7-a-neon.mk
-index c6c38e2..1b8b8be 100644
---- a/core/combo/arch/arm/armv7-a-neon.mk
-+++ b/core/combo/arch/arm/armv7-a-neon.mk
-@@ -31,7 +31,7 @@ ifeq ($(strip $(TARGET_$(combo_2nd_arch_prefix)CPU_VARIANT)),cortex-a7)
- 		-Wl,--no-fix-cortex-a8
- else
- ifeq ($(strip $(TARGET_$(combo_2nd_arch_prefix)CPU_VARIANT)),cortex-a5)
--	arch_variant_cflags := -mcpu=cortex-a7 -mfpu=neon-vfpv4
-+	arch_variant_cflags := -mcpu=cortex-a5 -mfpu=neon-vfpv4
- 	arch_variant_ldflags := \
- 		-Wl,--no-fix-cortex-a8
- else
+diff --git a/core/Makefile b/core/Makefile
+index 2585ded..58025f1 100644
+--- a/core/Makefile
++++ b/core/Makefile
+@@ -1670,6 +1670,13 @@ bootzip: bootimage
+ 	   $(OUT) \
+ 	   $(TARGET_DEVICE)
+ 
++ifeq ($(USE_PREBUILT_CHROMIUM),1)
++ifneq ($(PRODUCT_PREBUILT_WEBVIEWCHROMIUM),yes)
++	@echo "Running Chromium prebuilt setup script..."
++	$(hide) . $(TOPDIR)vendor/slim/utils/chromium_prebuilt.sh $(TOP)
++endif
++endif
++
+ endif    # recovery_fstab is defined
+ endif    # TARGET_NO_KERNEL != true
+ endif    # TARGET_DEVICE != generic*
 diff --git a/core/qcom_target.mk b/core/qcom_target.mk
-index a6d3965..b7ed2ba 100644
+index fcefe00..3153885 100644
 --- a/core/qcom_target.mk
 +++ b/core/qcom_target.mk
-@@ -23,7 +23,7 @@ ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
+@@ -17,7 +17,7 @@ ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
      TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
  
      # Enable DirectTrack for legacy targets
@@ -38,22 +43,11 @@ index a6d3965..b7ed2ba 100644
          ifeq ($(BOARD_USES_LEGACY_ALSA_AUDIO),true)
              qcom_flags += -DQCOM_DIRECTTRACK
          endif
-diff --git a/core/qcom_utils.mk b/core/qcom_utils.mk
-index bb1202c..9e5d096 100755
---- a/core/qcom_utils.mk
-+++ b/core/qcom_utils.mk
-@@ -1,5 +1,6 @@
- # Board platforms lists to be used for
- # TARGET_BOARD_PLATFORM specific featurization
-+QCOM_BOARD_PLATFORMS += msm7x27a
- QCOM_BOARD_PLATFORMS += msm7x30
- QCOM_BOARD_PLATFORMS += msm8226
- QCOM_BOARD_PLATFORMS += msm8610
 diff --git a/core/tasks/kernel.mk b/core/tasks/kernel.mk
-index 7936ccc..aa0b7d2 100644
+index 2c49271..5704f32 100644
 --- a/core/tasks/kernel.mk
 +++ b/core/tasks/kernel.mk
-@@ -184,7 +184,21 @@ ifneq ($(USE_CCACHE),)
+@@ -166,7 +166,21 @@ ifneq ($(USE_CCACHE),)
      ccache := $(strip $(wildcard $(ccache)))
  endif
  
@@ -76,7 +70,7 @@ index 7936ccc..aa0b7d2 100644
  ccache =
  
  define mv-modules
-@@ -192,7 +206,7 @@ define mv-modules
+@@ -174,7 +188,7 @@ define mv-modules
      if [ "$$mdpath" != "" ];then\
          mpath=`dirname $$mdpath`;\
          ko=`find $$mpath/kernel -type f -name *.ko`;\
@@ -85,19 +79,57 @@ index 7936ccc..aa0b7d2 100644
          mv $$i $(KERNEL_MODULES_OUT)/; done;\
      fi
  endef
+diff --git a/envsetup.sh b/envsetup.sh
+index d9d61ca..b4a218b 100644
+--- a/envsetup.sh
++++ b/envsetup.sh
+@@ -643,6 +643,13 @@ function lunch()
+ 
+     echo
+ 
++    if [[ $USE_PREBUILT_CHROMIUM -eq 1 ]]; then
++        chromium_prebuilt
++    else
++        # Unset flag in case user opts out later on
++        export PRODUCT_PREBUILT_WEBVIEWCHROMIUM=""
++    fi
++
+     set_stuff_for_environment
+     printconfig
+ }
+@@ -1798,7 +1805,19 @@ function make()
+     return $ret
+ }
+ 
++function chromium_prebuilt() {
++    T=$(gettop)
++    export TARGET_DEVICE=$(get_build_var TARGET_DEVICE)
++    hash=$T/prebuilts/chromium/$TARGET_DEVICE/hash.txt
+ 
++    if [ -r $hash ] && [ $(git --git-dir=$T/external/chromium_org/.git --work-tree=$T/external/chromium_org rev-parse --verify HEAD) == $(cat $hash) ]; then
++        export PRODUCT_PREBUILT_WEBVIEWCHROMIUM=yes
++        echo "** Prebuilt Chromium is up-to-date; Will be used for build **"
++    else
++        export PRODUCT_PREBUILT_WEBVIEWCHROMIUM=no
++        echo "** Prebuilt Chromium out-of-date/not found; Will build from source **"
++    fi
++}
+ 
+ if [ "x$SHELL" != "x/bin/bash" ]; then
+     case `ps -o command -p $$` in
 diff --git a/target/product/full_base.mk b/target/product/full_base.mk
-index ecaf1eb..ff3cc81 100644
+index 5e59f8a..fc0eec9 100644
 --- a/target/product/full_base.mk
 +++ b/target/product/full_base.mk
-@@ -30,7 +30,7 @@ PRODUCT_PROPERTY_OVERRIDES := \
+@@ -34,7 +34,7 @@ PRODUCT_PROPERTY_OVERRIDES := \
      ro.config.notification_sound=Io.ogg
  
  # Put en_US first in the list, so make it default.
 -PRODUCT_LOCALES := en_US
 +PRODUCT_LOCALES := ru_RU
  
- # Get some sounds
- $(call inherit-product-if-exists, frameworks/base/data/sounds/AllAudioSlim.mk)
+ # Include drawables for all densities
+ PRODUCT_AAPT_CONFIG := normal hdpi xhdpi xxhdpi
 -- 
 2.1.4
 

@@ -1,4 +1,4 @@
-From a7f0a5acb00684e9c814712c9f7fb73811889b62 Mon Sep 17 00:00:00 2001
+From f8dcd4abf625aefcdaae7502435aaa8168fb0df9 Mon Sep 17 00:00:00 2001
 From: Kyle Harrison <khwebmail@gmail.com>
 Date: Sat, 22 Nov 2014 22:25:21 +0000
 Subject: [PATCH] Add msm7x27a for DirectTrack and legacy audio
@@ -10,10 +10,10 @@ Change-Id: Ie2eb83b929465acd4c4b370b276340fd983ea0b9
  2 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/media/libmedia/Android.mk b/media/libmedia/Android.mk
-index 139d6f8..f25defc 100644
+index 0ea2374..f93b092 100644
 --- a/media/libmedia/Android.mk
 +++ b/media/libmedia/Android.mk
-@@ -76,7 +76,7 @@ LOCAL_SRC_FILES:= \
+@@ -75,7 +75,7 @@ LOCAL_SRC_FILES:= \
  LOCAL_SRC_FILES += ../libnbaio/roundup.c
  
  ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
@@ -23,11 +23,11 @@ index 139d6f8..f25defc 100644
  LOCAL_SRC_FILES += \
      IDirectTrack.cpp \
 diff --git a/media/libstagefright/Android.mk b/media/libstagefright/Android.mk
-index d1f0289..708900d 100644
+index c915725..bc18cc9 100644
 --- a/media/libstagefright/Android.mk
 +++ b/media/libstagefright/Android.mk
-@@ -126,7 +126,7 @@ LOCAL_SHARED_LIBRARIES := \
-         libpowermanager
+@@ -109,7 +109,7 @@ LOCAL_SHARED_LIBRARIES := \
+         libjpeg
  
  ifeq ($(BOARD_USES_QCOM_HARDWARE),true)
 -ifneq ($(filter msm7x30 msm8660 msm8960,$(TARGET_BOARD_PLATFORM)),)
@@ -35,15 +35,15 @@ index d1f0289..708900d 100644
  ifeq ($(BOARD_USES_LEGACY_ALSA_AUDIO),true)
     ifeq ($(USE_TUNNEL_MODE),true)
          LOCAL_CFLAGS += -DUSE_TUNNEL_MODE
-@@ -214,7 +214,7 @@ LOCAL_SHARED_LIBRARIES += \
+@@ -176,7 +176,7 @@ LOCAL_SHARED_LIBRARIES += \
          libstagefright_foundation \
          libdl
  
 -LOCAL_CFLAGS += -Wno-multichar
 +LOCAL_CFLAGS += -Wno-multichar -Wno-unused-parameter
  
- ifeq ($(DTS_CODEC_M_), true)
-   LOCAL_SRC_FILES+= DTSUtils.cpp
+ ifeq ($(BOARD_USE_SAMSUNG_COLORFORMAT), true)
+ LOCAL_CFLAGS += -DUSE_SAMSUNG_COLORFORMAT
 -- 
-2.3.6
+2.2.1
 

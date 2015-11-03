@@ -1,47 +1,52 @@
-From b9ae6fa54d57d84f75a0129f919ba58168530a0a Mon Sep 17 00:00:00 2001
+From 5edebf01c744796bb280cc2fff27d37b0528f686 Mon Sep 17 00:00:00 2001
 From: ksrt12 <kazakov12stepan2012@live.ru>
-Date: Sun, 18 Oct 2015 13:40:38 +0600
-Subject: [PATCH] Add SlimUpdater
+Date: Tue, 3 Nov 2015 22:59:08 +0600
+Subject: [PATCH] Add koe-chto
 
-Change-Id: I89236c6c25652542ec3ed0cc5f3e22ab913ff1e9
+Change-Id: I92c8df8050567d29e6a30dfd515aecdc6484bce2
 ---
- res/values-ru/slim_strings.xml                   |  1 +
- res/values/slim_strings.xml                      |  3 +++
- res/xml/device_info_settings.xml                 |  8 ++++++
+ res/values-ru/slim_strings.xml                   |  2 ++
+ res/values/slim_strings.xml                      |  7 +++++
+ res/xml/device_info_settings.xml                 | 16 +++++++++++
  src/com/android/settings/DeviceInfoSettings.java | 34 ++++++++++++++++++++++++
- 4 files changed, 46 insertions(+)
+ 4 files changed, 59 insertions(+)
 
 diff --git a/res/values-ru/slim_strings.xml b/res/values-ru/slim_strings.xml
-index 8f5b900..37f3ee2 100644
+index bae2a5d..c5e8fc3 100644
 --- a/res/values-ru/slim_strings.xml
 +++ b/res/values-ru/slim_strings.xml
-@@ -1180,4 +1180,5 @@
-   <string name="wifi_country_zm">Замбия</string>
-   <string name="wifi_country_zw">Зимбабве</string>
-   <string name="wifi_auto_config_priorities">Автоматический приоритет</string>
+@@ -531,4 +531,6 @@
+   <string name="doze_timeout_title">Длительность работы \"активного экрана\"</string>
+   <string name="doze_timeout_summary">Время, в течение которого экран будет включен для показа уведомления</string>
+   <string name="display_category_doze_options_title">Настройки \"активного экрана\"</string>
 +  <string name="slimupdate_settings_title">Обновления SlimLP</string>
++  <string name="authors_firmware">Авторы прошивки</string>
  </resources>
 diff --git a/res/values/slim_strings.xml b/res/values/slim_strings.xml
-index 6d36957..ea56ead 100644
+index 096fa63..9f7fe04 100644
 --- a/res/values/slim_strings.xml
 +++ b/res/values/slim_strings.xml
-@@ -53,6 +53,9 @@
-     <!-- Slim Shortcuts -->
-     <string name="slim_shortcut_picker">Slim Actions</string>
+@@ -30,6 +30,13 @@
+     <string name="header_category_personalization">Personalization</string>
+     <string name="interface_settings_title">Interface</string>
  
 +    <!-- Slim Updater -->
 +    <string name="slimupdate_settings_title">SlimLP updates</string>
++ 
++    <!-- Authors firmware information-->
++    <string name="authors_firmware">Authors firmware</string>
++    <string name="authors_firmware_summary">ksrt12 and fell978</string>
 +
-     <!-- About device screen, Slim version -->
-     <string name="slim_version_title">Slim version</string>
-     <string name="slim_version_default">Unknown</string>
+     <!-- Color Picker -->
+     <string name="dialog_color_picker">Color Picker</string>
+     <string name="press_color_to_apply">Press on color below to apply</string>
 diff --git a/res/xml/device_info_settings.xml b/res/xml/device_info_settings.xml
-index 165c56d..41661a3 100644
+index 4c2a821..b0deb19 100644
 --- a/res/xml/device_info_settings.xml
 +++ b/res/xml/device_info_settings.xml
-@@ -21,6 +21,14 @@
-                           android:enabled="false"
-                           android:layout="@layout/slim_logo_row" />
+@@ -17,6 +17,14 @@
+ <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+         android:title="@string/about_settings">
  
 +        <PreferenceScreen android:key="slim_updates"
 +                android:title="@string/slimupdate_settings_title"
@@ -54,21 +59,33 @@ index 165c56d..41661a3 100644
          <!-- Device status - launches activity -->
          <PreferenceScreen android:key="status_info"
                  android:title="@string/device_status" 
+@@ -148,4 +156,12 @@
+                 android:title="@string/selinux_status"
+                 android:summary="@string/selinux_status_enforcing"/>
+ 
++        <!-- Authors firmware information-->
++        <PreferenceScreen android:key="authors_firmware" 
++                style="?android:preferenceInformationStyle"
++                android:title="@string/authors_firmware"
++                android:summary="@string/authors_firmware_summary">
++            <intent android:action="android.intent.action.VIEW" android:data="https://github.com/U8950-Projects" />
++        </PreferenceScreen>
++
+ </PreferenceScreen>
 diff --git a/src/com/android/settings/DeviceInfoSettings.java b/src/com/android/settings/DeviceInfoSettings.java
-index 4168867..c926509 100644
+index d601c15..ee7596d 100644
 --- a/src/com/android/settings/DeviceInfoSettings.java
 +++ b/src/com/android/settings/DeviceInfoSettings.java
-@@ -20,7 +20,9 @@ import android.app.Activity;
+@@ -20,6 +20,8 @@ import android.app.Activity;
  import android.content.Context;
  import android.content.Intent;
  import android.content.pm.ApplicationInfo;
 +import android.content.pm.PackageInfo;
- import android.content.pm.PackageManager;
 +import android.content.pm.PackageManager.NameNotFoundException;
+ import android.content.pm.PackageManager;
  import android.content.pm.ResolveInfo;
  import android.os.Binder;
- import android.os.Build;
-@@ -79,6 +81,7 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
+@@ -78,6 +80,7 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
      private static final String KEY_FIRMWARE_VERSION = "firmware_version";
      private static final String KEY_SLIM_VERSION = "slim_version";
      private static final String KEY_SLIM_BUILD_DATE = "build_date";
@@ -76,7 +93,7 @@ index 4168867..c926509 100644
      private static final String KEY_EQUIPMENT_ID = "fcc_equipment_id";
      private static final String PROPERTY_EQUIPMENT_ID = "ro.ril.fccid";
      private static final String KEY_DEVICE_FEEDBACK = "device_feedback";
-@@ -122,6 +125,13 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
+@@ -121,6 +124,13 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
          removePreferenceIfPropertyMissing(getPreferenceScreen(), KEY_SELINUX_STATUS,
                  PROPERTY_SELINUX_STATUS);
  
@@ -90,12 +107,12 @@ index 4168867..c926509 100644
          String cpuInfo = getCPUInfo();
          String memInfo = getMemInfo();
  
-@@ -490,6 +500,30 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
+@@ -484,6 +494,30 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
              }
          };
  
 +    private boolean removePreferenceIfPackageNotInstalled(Preference preference) {
-+        String intentUri=((PreferenceScreen) preference).getIntent().toUri(1);
++       String intentUri=((PreferenceScreen) preference).getIntent().toUri(1);
 +        Pattern pattern = Pattern.compile("component=([^/]+)/");
 +        Matcher matcher = pattern.matcher(intentUri);
 +

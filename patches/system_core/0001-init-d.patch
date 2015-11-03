@@ -1,18 +1,18 @@
-From 62a4cb104b21411d5a2aeca55d148c578222c015 Mon Sep 17 00:00:00 2001
+From 0509fd9ea00853fb0df96ea661e10121b63e921f Mon Sep 17 00:00:00 2001
 From: ksrt12 <kazakov12stepan2012@live.ru>
-Date: Tue, 29 Sep 2015 19:20:39 +0600
+Date: Tue, 3 Nov 2015 22:41:02 +0600
 Subject: [PATCH] init d
 
-Change-Id: Iae622d0a40dc0677c1a0f8ee902911102897dfdf
+Change-Id: Iad5458673e3a9ea36064e781dc552ca3598a336b
 ---
  rootdir/init.rc | 7 +++++++
  1 file changed, 7 insertions(+)
 
 diff --git a/rootdir/init.rc b/rootdir/init.rc
-index 3fa9dc7..348c011 100644
+index 42408d9..fcdf837 100644
 --- a/rootdir/init.rc
 +++ b/rootdir/init.rc
-@@ -650,3 +650,10 @@ service pre-recovery /system/bin/uncrypt
+@@ -657,3 +657,10 @@ service pre-recovery /system/bin/uncrypt
      class main
      disabled
      oneshot

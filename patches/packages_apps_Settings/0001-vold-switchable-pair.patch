@@ -1,4 +1,4 @@
-From 15cec631dc24a505c6ca3e8b244248a8bce7ebc1 Mon Sep 17 00:00:00 2001
+From 83dd7842a295fd7c44a8927f02cd181cef86b42e Mon Sep 17 00:00:00 2001
 From: Kyle Harrison <khwebmail@gmail.com>
 Date: Mon, 24 Nov 2014 00:53:10 +0000
 Subject: [PATCH] Add setting for vold switchable pair
@@ -11,12 +11,12 @@ Change-Id: Ie697b747d3b8a1a09b2a1c52aa653393f6172f0c
  3 files changed, 65 insertions(+), 1 deletion(-)
 
 diff --git a/res/values/slim_strings.xml b/res/values/slim_strings.xml
-index d7847e3..fff9d6d 100644
+index 75d31f0..45deb38 100644
 --- a/res/values/slim_strings.xml
 +++ b/res/values/slim_strings.xml
-@@ -53,6 +53,13 @@
-     <string name="root_access_adb">ADB only</string>
-     <string name="root_access_all">Apps and ADB</string>
+@@ -131,6 +131,13 @@
+     <string name="ime_switcher_notify">Selector notification</string>
+     <string name="ime_switcher_notify_summary">Display input method selector notification</string>
  
 +    <!-- Vold Switchable Pair -->
 +    <string name="storage_switch_title">Use external SD as primary</string>
@@ -25,9 +25,9 @@ index d7847e3..fff9d6d 100644
 +    <string name="reboot_prompt_title">Reboot required</string>
 +    <string name="reboot_prompt_message">In order to apply the changed configuration, a reboot is required.\n\nDo you want to reboot now?</string>
 +
-     <!-- App ops -->
-     <string name="app_ops_summaries_coarse_location">coarse location</string>
-     <string name="app_ops_summaries_fine_location">fine location</string>
+     <!-- Privacy Guard -->
+     <string name="app_security_title">App security</string>
+     <string name="privacy_guard_dlg_title">Enable Privacy Guard?</string>
 diff --git a/res/xml/device_info_memory.xml b/res/xml/device_info_memory.xml
 index 36da89e..26d464f 100644
 --- a/res/xml/device_info_memory.xml
@@ -46,10 +46,10 @@ index 36da89e..26d464f 100644
  
      <PreferenceCategory
 diff --git a/src/com/android/settings/deviceinfo/Memory.java b/src/com/android/settings/deviceinfo/Memory.java
-index b788324..f0027eb 100644
+index 97565ba..fd0416a 100644
 --- a/src/com/android/settings/deviceinfo/Memory.java
 +++ b/src/com/android/settings/deviceinfo/Memory.java
-@@ -32,21 +32,25 @@ import android.hardware.usb.UsbManager;
+@@ -32,20 +32,24 @@ import android.hardware.usb.UsbManager;
  import android.os.Bundle;
  import android.os.Environment;
  import android.os.IBinder;
@@ -63,7 +63,6 @@ index b788324..f0027eb 100644
  import android.os.storage.StorageEventListener;
  import android.os.storage.StorageManager;
  import android.os.storage.StorageVolume;
- import android.os.SystemProperties;
 +import android.preference.SwitchPreference;
  import android.preference.ListPreference;
  import android.preference.Preference;
@@ -75,7 +74,7 @@ index b788324..f0027eb 100644
  import android.util.Log;
  import android.view.Menu;
  import android.view.MenuInflater;
-@@ -97,6 +101,10 @@ public class Memory extends SettingsPreferenceFragment
+@@ -94,6 +98,10 @@ public class Memory extends SettingsPreferenceFragment
      private UsbManager mUsbManager;
  
      private ArrayList<StorageVolumePreferenceCategory> mCategories = Lists.newArrayList();
@@ -86,7 +85,7 @@ index b788324..f0027eb 100644
  
      @Override
      public void onCreate(Bundle icicle) {
-@@ -111,6 +119,27 @@ public class Memory extends SettingsPreferenceFragment
+@@ -108,6 +116,27 @@ public class Memory extends SettingsPreferenceFragment
  
          addPreferencesFromResource(R.xml.device_info_memory);
  
@@ -114,7 +113,7 @@ index b788324..f0027eb 100644
          addCategory(StorageVolumePreferenceCategory.buildForInternal(context));
  
          final StorageVolume[] storageVolumes = mStorageManager.getVolumeList();
-@@ -265,7 +294,13 @@ public class Memory extends SettingsPreferenceFragment
+@@ -240,7 +269,13 @@ public class Memory extends SettingsPreferenceFragment
  
      @Override
      public boolean onPreferenceTreeClick(PreferenceScreen preferenceScreen, Preference preference) {
@@ -129,7 +128,7 @@ index b788324..f0027eb 100644
              ConfirmClearCacheFragment.show(this);
              return true;
          }
-@@ -598,4 +633,20 @@ public class Memory extends SettingsPreferenceFragment
+@@ -539,4 +574,20 @@ public class Memory extends SettingsPreferenceFragment
              }
          };
  
@@ -151,5 +150,5 @@ index b788324..f0027eb 100644
 +    }
  }
 -- 
-2.3.6
+2.1.3
 
