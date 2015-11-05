@@ -1,0 +1,45 @@
+From e8e1fb8e5c090d33c33a8ffa6c481d5a17f61261 Mon Sep 17 00:00:00 2001
+From: ksrt12 <kazakov12stepan2012@live.ru>
+Date: Thu, 5 Nov 2015 15:39:26 +0600
+Subject: [PATCH] fix mka function
+
+Change-Id: I98d11648b053d9834b8ad02412ca1c5446cf3e69
+---
+ envsetup.sh | 22 ++++++++++++++--------
+ 1 file changed, 14 insertions(+), 8 deletions(-)
+
+diff --git a/envsetup.sh b/envsetup.sh
+index e5256fb..8f879c8 100644
+--- a/envsetup.sh
++++ b/envsetup.sh
+@@ -1988,14 +1988,20 @@ function installrecovery()
+ }
+ 
+ function mka() {
+-    case `uname -s` in
+-        Darwin)
+-            make -j `sysctl hw.ncpu|cut -d" " -f2` "$@"
+-            ;;
+-        *)
+-            mk_timer schedtool -B -n 1 -e ionice -n 1 make -j$(cat /proc/cpuinfo | grep "^processor" | wc -l) "$@"
+-            ;;
+-    esac
++    local T=$(gettop)
++    if [ "$T" ]; then
++        case `uname -s` in
++            Darwin)
++                make -C $T -j `sysctl hw.ncpu|cut -d" " -f2` "$@"
++                ;;
++            *)
++                mk_timer schedtool -B -n 1 -e ionice -n 1 make -C $T -j$(cat /proc/cpuinfo | grep "^processor" | wc -l) "$@"
++                ;;
++        esac
++
++    else
++        echo "Couldn't locate the top of the tree.  Try setting TOP."
++    fi
+ }
+ 
+ function cmka() {
+-- 
+2.1.4
