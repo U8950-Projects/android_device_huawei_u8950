@@ -55,9 +55,9 @@ PRODUCT_COPY_FILES += \
 
 # Properties
 PRODUCT_PROPERTY_OVERRIDES += \
-	ro.confg.hw_appfsversion=u8950V5_1_SYSIMG \
-	ro.confg.hw_appsbootversion=u8950V5_1_APPSBOOT \
-	ro.confg.hw_appversion=u8950V5_1_KERNEL\
+	ro.confg.hw_appfsversion=u8950V5_0_SYSIMG \
+	ro.confg.hw_appsbootversion=u8950V5_0_APPSBOOT \
+	ro.confg.hw_appversion=u8950V5_0_KERNEL\
 
 PRODUCT_PROPERTY_OVERRIDES += \
 	gsm.version.baseband=1040 \
