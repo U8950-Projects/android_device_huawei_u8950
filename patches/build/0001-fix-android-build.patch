@@ -1,16 +1,18 @@
-From cb55bd9493b669e37f40aef546a4af74c0204a87 Mon Sep 17 00:00:00 2001
+From ec9d014e532e563dab522f00f75ee1830b6ab026 Mon Sep 17 00:00:00 2001
 From: ksrt12 <kazakov12stepan2012@live.ru>
-Date: Tue, 13 Oct 2015 18:55:21 +0600
+Date: Thu, 5 Nov 2015 16:02:34 +0600
 Subject: [PATCH] fix android build
 
-Change-Id: Iea163b026db74d004dfe79377fb9f75ebe158b25
+Change-Id: I4db0988c33e40698b290698fbe246bf43503cd03
 ---
  core/combo/arch/arm/armv7-a-neon.mk |  2 +-
  core/qcom_target.mk                 |  2 +-
  core/qcom_utils.mk                  |  1 +
  core/tasks/kernel.mk                | 18 ++++++++++++++++--
+ envsetup.sh                         | 22 ++++++++++++++--------
+ target/product/embedded.mk          |  1 -
  target/product/full_base.mk         |  2 +-
- 5 files changed, 20 insertions(+), 5 deletions(-)
+ 7 files changed, 34 insertions(+), 14 deletions(-)
 
 diff --git a/core/combo/arch/arm/armv7-a-neon.mk b/core/combo/arch/arm/armv7-a-neon.mk
 index c6c38e2..1b8b8be 100644
@@ -85,6 +87,51 @@ index 7936ccc..aa0b7d2 100644
          mv $$i $(KERNEL_MODULES_OUT)/; done;\
      fi
  endef
+diff --git a/envsetup.sh b/envsetup.sh
+index e5256fb..8f879c8 100644
+--- a/envsetup.sh
++++ b/envsetup.sh
+@@ -1988,14 +1988,20 @@ function installrecovery()
+ }
+ 
+ function mka() {
+-    case `uname -s` in
+-        Darwin)
+-            make -j `sysctl hw.ncpu|cut -d" " -f2` "$@"
+-            ;;
+-        *)
+-            mk_timer schedtool -B -n 1 -e ionice -n 1 make -j$(cat /proc/cpuinfo | grep "^processor" | wc -l) "$@"
+-            ;;
+-    esac
++    local T=$(gettop)
++    if [ "$T" ]; then
++        case `uname -s` in
++            Darwin)
++                make -C $T -j `sysctl hw.ncpu|cut -d" " -f2` "$@"
++                ;;
++            *)
++                mk_timer schedtool -B -n 1 -e ionice -n 1 make -C $T -j$(cat /proc/cpuinfo | grep "^processor" | wc -l) "$@"
++                ;;
++        esac
++
++    else
++        echo "Couldn't locate the top of the tree.  Try setting TOP."
++    fi
+ }
+ 
+ function cmka() {
+diff --git a/target/product/embedded.mk b/target/product/embedded.mk
+index 2daa904..b60c948 100644
+--- a/target/product/embedded.mk
++++ b/target/product/embedded.mk
+@@ -72,7 +72,6 @@ PRODUCT_PACKAGES += \
+ 
+ # SELinux packages
+ PRODUCT_PACKAGES += \
+-    auditd \
+     sepolicy \
+     file_contexts \
+     seapp_contexts \
 diff --git a/target/product/full_base.mk b/target/product/full_base.mk
 index ecaf1eb..ff3cc81 100644
 --- a/target/product/full_base.mk
@@ -100,4 +147,3 @@ index ecaf1eb..ff3cc81 100644
  $(call inherit-product-if-exists, frameworks/base/data/sounds/AllAudioSlim.mk)
 -- 
 2.1.4
-
