@@ -67,6 +67,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Packages
 PRODUCT_PACKAGES += \
+	Eleven \
 	RootExplorer
 	#SlimLPUpdater
 
