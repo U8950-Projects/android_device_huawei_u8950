@@ -38,7 +38,36 @@ PRODUCT_COPY_FILES += \
 	$(LOCAL_PATH)/twrp/recovery/sbin/linker:/recovery/root/sbin/linker \
 	$(LOCAL_PATH)/twrp/recovery/sbin/charge.sh:/recovery/root/sbin/charge.sh
 endif
-	
+ifneq ($(TARGET_PREBUILT_KERNEL),)
+MOD_PATH := $(LOCAL_PATH)/prebuilt/modules
+LIB_PATH := system/lib/modules
+PRODUCT_COPY_FILES += \
+	$(LOCAL_PATH)/prebuilt/kernel:kernel \
+	$(MOD_PATH)/ansi_cprng.ko:$(LIB_PATH)/ansi_cprng.ko \
+	$(MOD_PATH)/cfg80211.ko:$(LIB_PATH)/cfg80211.ko \
+	$(MOD_PATH)/dal_remotetest.ko:$(LIB_PATH)/dal_remotetest.ko \
+	$(MOD_PATH)/dhd.ko:$(LIB_PATH)/dhd.ko \
+	$(MOD_PATH)/evbug.ko:$(LIB_PATH)/evbug.ko \
+	$(MOD_PATH)/gspca_main.ko:$(LIB_PATH)/gspca_main.ko \
+	$(MOD_PATH)/lcd.ko:$(LIB_PATH)/lcd.ko \
+	$(MOD_PATH)/librasdioif.ko:$(LIB_PATH)/librasdioif.ko \
+	$(MOD_PATH)/mmc_block_test.ko:$(LIB_PATH)/mmc_block_test.ko \
+	$(MOD_PATH)/mmc_test.ko:$(LIB_PATH)/mmc_test.ko \
+	$(MOD_PATH)/mtd_erasepart.ko:$(LIB_PATH)/mtd_erasepart.ko \
+	$(MOD_PATH)/mtd_nandecctest.ko:$(LIB_PATH)/mtd_nandecctest.ko \
+	$(MOD_PATH)/mtd_oobtest.ko:$(LIB_PATH)/mtd_oobtest.ko \
+	$(MOD_PATH)/mtd_pagetest.ko:$(LIB_PATH)/mtd_pagetest.ko \
+	$(MOD_PATH)/mtd_readtest.ko:$(LIB_PATH)/mtd_readtest.ko \
+	$(MOD_PATH)/mtd_speedtest.ko:$(LIB_PATH)/mtd_speedtest.ko \
+	$(MOD_PATH)/mtd_stresstest.ko:$(LIB_PATH)/mtd_stresstest.ko \
+	$(MOD_PATH)/mtd_subpagetest.ko:$(LIB_PATH)/mtd_subpagetest.ko \
+	$(MOD_PATH)/mtd_torturetest.ko:$(LIB_PATH)/mtd_torturetest.ko \
+	$(MOD_PATH)/pppoe.ko:$(LIB_PATH)/pppoe.ko \
+	$(MOD_PATH)/scsi_wait_scan.ko:$(LIB_PATH)/scsi_wait_scan.ko \
+	$(MOD_PATH)/tcp_bic.ko:$(LIB_PATH)/tcp_bic.ko \
+	$(MOD_PATH)/test-iosched.ko:$(LIB_PATH)/test-iosched.ko
+endif
+
 # Permissions
 PRODUCT_COPY_FILES += \
 	frameworks/native/data/etc/android.hardware.sensor.compass.xml:system/etc/permissions/android.hardware.sensor.compass.xml
