@@ -54,7 +54,6 @@ TARGET_RECOVERY_FSTAB := device/huawei/u8950/twrp/recovery.fstab
 BOARD_HAS_LARGE_FILESYSTEM := true
 BOARD_HAS_NO_MISC_PARTITION := true
 BOARD_USES_MMCUTILS := true
-DEVICE_RESOLUTION := 540x960
 SP1_NAME := "cust"
 SP1_BACKUP_METHOD := files
 SP1_MOUNTABLE := 1
@@ -86,7 +85,7 @@ BOARD_DATA_FILESYSTEM_OPTIONS := rw
 else
 TARGET_RECOVERY_FSTAB := device/huawei/u8950/rootdir/fstab.huawei
 endif
-
+DEVICE_RESOLUTION := 540x960
 BOARD_CUSTOM_GRAPHICS := ../../../device/huawei/u8950/recovery/graphics.c
 
 # Wi-Fi
