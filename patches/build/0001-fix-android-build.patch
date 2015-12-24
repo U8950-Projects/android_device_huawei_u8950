@@ -1,19 +1,35 @@
-From ec9d014e532e563dab522f00f75ee1830b6ab026 Mon Sep 17 00:00:00 2001
+From 43def3ce6553edd91eb84a3044ec5fdb1cc0dac7 Mon Sep 17 00:00:00 2001
 From: ksrt12 <kazakov12stepan2012@live.ru>
-Date: Thu, 5 Nov 2015 16:02:34 +0600
+Date: Thu, 24 Dec 2015 19:07:47 +0600
 Subject: [PATCH] fix android build
 
-Change-Id: I4db0988c33e40698b290698fbe246bf43503cd03
+Change-Id: I9e54887e2c58ff902777ffb716fb34f5e593017d
 ---
+ CleanSpec.mk                        |  4 ++++
  core/combo/arch/arm/armv7-a-neon.mk |  2 +-
  core/qcom_target.mk                 |  2 +-
  core/qcom_utils.mk                  |  1 +
- core/tasks/kernel.mk                | 18 ++++++++++++++++--
- envsetup.sh                         | 22 ++++++++++++++--------
+ core/tasks/kernel.mk                | 14 ++++++++++++--
+ envsetup.sh                         | 27 +++++++++++++++++++--------
  target/product/embedded.mk          |  1 -
  target/product/full_base.mk         |  2 +-
- 7 files changed, 34 insertions(+), 14 deletions(-)
+ 8 files changed, 39 insertions(+), 14 deletions(-)
 
+diff --git a/CleanSpec.mk b/CleanSpec.mk
+index e9d4455..05299fa 100644
+--- a/CleanSpec.mk
++++ b/CleanSpec.mk
+@@ -317,6 +317,10 @@ $(call add-clean-step, rm -rf $(PRODUCT_OUT)/obj/APPS/*)
+ # Added new build props
+ $(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/build.prop)
+ 
++# Kernel
++$(call add-clean-step, rm -rf $(PRODUCT_OUT)/system/lib/modules/*)
++$(call add-clean-step, rm -rf $(PRODUCT_OUT)/obj/KERNRL_OBJ/*)
++
+ # ************************************************
+ # NEWER CLEAN STEPS MUST BE AT THE END OF THE LIST
+ # ************************************************
 diff --git a/core/combo/arch/arm/armv7-a-neon.mk b/core/combo/arch/arm/armv7-a-neon.mk
 index c6c38e2..1b8b8be 100644
 --- a/core/combo/arch/arm/armv7-a-neon.mk
@@ -52,10 +68,10 @@ index bb1202c..9e5d096 100755
  QCOM_BOARD_PLATFORMS += msm8226
  QCOM_BOARD_PLATFORMS += msm8610
 diff --git a/core/tasks/kernel.mk b/core/tasks/kernel.mk
-index 7936ccc..aa0b7d2 100644
+index 7936ccc..1be1cd0 100644
 --- a/core/tasks/kernel.mk
 +++ b/core/tasks/kernel.mk
-@@ -184,7 +184,21 @@ ifneq ($(USE_CCACHE),)
+@@ -184,7 +184,17 @@ ifneq ($(USE_CCACHE),)
      ccache := $(strip $(wildcard $(ccache)))
  endif
  
@@ -66,32 +82,28 @@ index 7936ccc..aa0b7d2 100644
 +    else
 +        TARGET_KERNEL_CUSTOM_TOOLCHAIN_PATH := prebuilt/linux-x86/toolchain
 +    endif
++MOD_TOOL := $(ANDROID_BUILD_TOP)/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN_PATH)/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN)
 +else
-+    ifeq ($(HOST_OS),darwin)
-+        TARGET_KERNEL_CUSTOM_TOOLCHAIN_PATH := prebuilts/gcc/darwin-x86/arm/arm-linux-androideabi-4.9/bin
-+    else
-+        TARGET_KERNEL_CUSTOM_TOOLCHAIN_PATH := prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin
-+    endif
-+    TARGET_KERNEL_CUSTOM_TOOLCHAIN := arm-eabi-
++MOD_TOOL := $(KERNEL_TOOLCHAIN_PATH)
 +endif
-+ KERNEL_CROSS_COMPILE:=CROSS_COMPILE="$(ccache) $(ANDROID_BUILD_TOP)/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN_PATH)/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN)"
++KERNEL_CROSS_COMPILE := CROSS_COMPILE="$(ccache) $(MOD_TOOL)"
  ccache =
  
  define mv-modules
-@@ -192,7 +206,7 @@ define mv-modules
+@@ -192,7 +202,7 @@ define mv-modules
      if [ "$$mdpath" != "" ];then\
          mpath=`dirname $$mdpath`;\
          ko=`find $$mpath/kernel -type f -name *.ko`;\
 -        for i in $$ko; do $(KERNEL_TOOLCHAIN_PATH)strip --strip-unneeded $$i;\
-+        for i in $$ko; do $(ANDROID_BUILD_TOP)/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN_PATH)/$(TARGET_KERNEL_CUSTOM_TOOLCHAIN)strip --strip-unneeded $$i;\
++        for i in $$ko; do $(MOD_TOOL)strip --strip-unneeded $$i;\
          mv $$i $(KERNEL_MODULES_OUT)/; done;\
      fi
  endef
 diff --git a/envsetup.sh b/envsetup.sh
-index e5256fb..8f879c8 100644
+index e5256fb..3ce2762 100644
 --- a/envsetup.sh
 +++ b/envsetup.sh
-@@ -1988,14 +1988,20 @@ function installrecovery()
+@@ -1988,14 +1988,25 @@ function installrecovery()
  }
  
  function mka() {
@@ -103,14 +115,19 @@ index e5256fb..8f879c8 100644
 -            mk_timer schedtool -B -n 1 -e ionice -n 1 make -j$(cat /proc/cpuinfo | grep "^processor" | wc -l) "$@"
 -            ;;
 -    esac
++    if [[ $IGNORE_BUILD_ERRORS -eq 1 ]]; then
++        iberr=-i
++    else
++        iberr=
++    fi
 +    local T=$(gettop)
 +    if [ "$T" ]; then
 +        case `uname -s` in
 +            Darwin)
-+                make -C $T -j `sysctl hw.ncpu|cut -d" " -f2` "$@"
++                make -C $T $iberr -j `sysctl hw.ncpu|cut -d" " -f2` "$@"
 +                ;;
 +            *)
-+                mk_timer schedtool -B -n 1 -e ionice -n 1 make -C $T -j$(cat /proc/cpuinfo | grep "^processor" | wc -l) "$@"
++                mk_timer schedtool -B -n 1 -e ionice -n 1 make -C $T $iberr -j$(cat /proc/cpuinfo | grep "^processor" | wc -l) "$@"
 +                ;;
 +        esac
 +
@@ -146,4 +163,5 @@ index ecaf1eb..ff3cc81 100644
  # Get some sounds
  $(call inherit-product-if-exists, frameworks/base/data/sounds/AllAudioSlim.mk)
 -- 
-2.1.4
+2.6.4
+
