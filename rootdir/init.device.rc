@@ -78,16 +78,6 @@ service compassd /system/bin/compassd
     disabled
     oneshot
 
-service mpdecision /system/bin/mpdecision --no_sleep --avg_comp
-    class late_start
-    disabled
-    user root
-
-service thermald /system/bin/thermald
-    class late_start
-    user root
-    group root
-
 service gpu_dcvsd /system/bin/gpu_dcvsd
     class late_start
     user root
