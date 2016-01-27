@@ -39,7 +39,7 @@ BOARD_RIL_CLASS := ../../../device/huawei/u8950/ril/
 # Kernel
 #TARGET_PREBUILT_KERNEL := device/huawei/u8950/prebuilt/kernel
 ifeq ($(TARGET_PREBUILT_KERNEL),)
-TARGET_KERNEL_CONFIG := u8950_defconfig
+TARGET_KERNEL_CONFIG := G600_defconfig
 endif
 
 # Partitions
