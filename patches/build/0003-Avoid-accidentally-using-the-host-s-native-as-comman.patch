@@ -1,0 +1,35 @@
+From 97fa486e0c9aed0562a00e97c67ccddcc4077d6e Mon Sep 17 00:00:00 2001
+From: Alistair Strachan <alistair.strachan@imgtec.com>
+Date: Thu, 5 May 2016 16:29:08 -0700
+Subject: [PATCH] Avoid accidentally using the host's native 'as' command.
+
+When invoking clang for the host to assemble .S files, the -B flag
+would not be provided, which allowed the host prebuilt clang to
+use an 'as' from the native environment. Most of the time this
+"just works", but some newer 'as' versions cause problems with
+the older prebuilt toolchain, for example by generating
+unsupported relocation types.
+
+To avoid this problem, simply use the -B flag to tell clang to
+invoke the assembler from the correct prebuilt gcc prefix.
+
+Change-Id: I18ea4f37ae637b652cfd7321c41929f8be075342
+Signed-off-by: Alistair Strachan <alistair.strachan@imgtec.com>
+---
+ core/clang/HOST_x86_common.mk | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/core/clang/HOST_x86_common.mk b/core/clang/HOST_x86_common.mk
+index 0241cb6..77547b7 100644
+--- a/core/clang/HOST_x86_common.mk
++++ b/core/clang/HOST_x86_common.mk
+@@ -8,6 +8,7 @@ ifeq ($(HOST_OS),linux)
+ CLANG_CONFIG_x86_LINUX_HOST_EXTRA_ASFLAGS := \
+   --gcc-toolchain=$($(clang_2nd_arch_prefix)HOST_TOOLCHAIN_FOR_CLANG) \
+   --sysroot=$($(clang_2nd_arch_prefix)HOST_TOOLCHAIN_FOR_CLANG)/sysroot \
++  -B$($(clang_2nd_arch_prefix)HOST_TOOLCHAIN_FOR_CLANG)/x86_64-linux/bin \
+   -no-integrated-as
+ 
+ CLANG_CONFIG_x86_LINUX_HOST_EXTRA_CFLAGS := \
+-- 
+2.8.3
