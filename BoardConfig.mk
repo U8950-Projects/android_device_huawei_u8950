@@ -102,8 +102,6 @@ WIFI_DRIVER_FW_PATH_P2P := "/vendor/firmware/fw_bcmdhd_apsta.bin"
 WIFI_DRIVER_FW_PATH_PARAM := "/sys/module/dhd/parameters/firmware_path"
 WIFI_DRIVER_MODULE_ARG := "firmware_path=${WIFI_DRIVER_FW_PATH_STA} nvram_path=/system/etc/nvram_4330.txt"
 WIFI_DRIVER_MODULE_NAME := "dhd"
-WIFI_DRIVER_MODULE_PATH := "/system/lib/modules/${WIFI_DRIVER_MODULE_NAME}.ko"
 WIFI_EXT_MODULE_NAME := "cfg80211"
-WIFI_EXT_MODULE_PATH := "/system/lib/modules/${WIFI_EXT_MODULE_NAME}.ko"
 
 #BOARD_LEGACY_NL80211_STA_EVENTS := true
