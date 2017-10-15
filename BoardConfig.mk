@@ -103,5 +103,7 @@ WIFI_DRIVER_FW_PATH_PARAM := "/sys/module/dhd/parameters/firmware_path"
 WIFI_DRIVER_MODULE_ARG := "firmware_path=${WIFI_DRIVER_FW_PATH_STA} nvram_path=/system/etc/nvram_4330.txt"
 WIFI_DRIVER_MODULE_NAME := "dhd"
 WIFI_EXT_MODULE_NAME := "cfg80211"
+WIFI_DRIVER_MODULE_PATH := "/system/lib/modules/dhd.ko"
+WIFI_EXT_MODULE_PATH := "/system/lib/modules/cfg80211.ko"
 
 #BOARD_LEGACY_NL80211_STA_EVENTS := true
